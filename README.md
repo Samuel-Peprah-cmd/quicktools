@@ -2,7 +2,7 @@
 
 <p align="center">
 
-&#x20; <img src="assets/AtomDev\_Studios.png" alt="AtomDev Studios" width="320" style="border-radius: 8px;">
+&#x20; <img src="https://raw.githubusercontent.com/Samuel-Peprah-cmd/quicktools/main/assets/AtomDev\_Studios.png" alt="AtomDev Studios" width="320" style="border-radius: 8px;">
 
 </p>
 
