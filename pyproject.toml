@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quicktools-atom"
-version = "0.2.1"
+version = "0.3.0"
 description = "Math and string utilities with a bundled CLI, by AtomDev Studios"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
-    { name = "Samuel Peprah", email = "" }
+    { name = "Samuel Peprah", email = "windscribe.samuel@gmail.com" }
 ]
 dependencies = []
 

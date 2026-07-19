@@ -59,3 +59,91 @@ def is_coprime(a: int, b: int) -> bool:
     """Return True if a and b share no common factors other than 1."""
     import math
     return math.gcd(a, b) == 1
+
+def chinese_remainder_theorem(remainders: list[int], moduli: list[int]) -> int:
+    """Solve a system of congruences x = remainders[i] (mod moduli[i]) for all i,
+    returning the smallest non-negative solution (moduli must be pairwise coprime)."""
+    total_modulus = 1
+    for m in moduli:
+        total_modulus *= m
+    result = 0
+    for r, m in zip(remainders, moduli):
+        partial = total_modulus // m
+        result += r * partial * mod_inverse(partial, m)
+    return result % total_modulus
+
+
+def sum_of_divisors(n: int) -> int:
+    """Sum of all positive divisors of n, including 1 and n itself."""
+    if n < 1:
+        raise ValueError("n must be a positive integer")
+    total = 0
+    for i in range(1, int(n ** 0.5) + 1):
+        if n % i == 0:
+            total += i
+            if i != n // i:
+                total += n // i
+    return total
+
+
+def is_perfect_number(n: int) -> bool:
+    """Return True if n equals the sum of its proper divisors (e.g. 6, 28, 496)."""
+    if n < 1:
+        return False
+    return sum_of_divisors(n) - n == n
+
+
+def is_amicable_pair(a: int, b: int) -> bool:
+    """Return True if a and b form an amicable pair (each equals the sum of the other's proper divisors)."""
+    return (sum_of_divisors(a) - a == b) and (sum_of_divisors(b) - b == a) and a != b
+
+
+def digital_root(n: int) -> int:
+    """Repeatedly sum the digits of n until a single digit remains."""
+    n = abs(n)
+    while n >= 10:
+        n = sum(int(d) for d in str(n))
+    return n
+
+
+def collatz_sequence(n: int) -> list[int]:
+    """Return the Collatz sequence starting at n, ending at 1."""
+    if n < 1:
+        raise ValueError("n must be a positive integer")
+    sequence = [n]
+    while n != 1:
+        n = n // 2 if n % 2 == 0 else 3 * n + 1
+        sequence.append(n)
+    return sequence
+
+
+def next_prime(n: int) -> int:
+    """Return the smallest prime strictly greater than n."""
+    candidate = n + 1
+    while True:
+        is_p = True
+        for i in range(2, int(candidate ** 0.5) + 1):
+            if candidate % i == 0:
+                is_p = False
+                break
+        if is_p and candidate > 1:
+            return candidate
+        candidate += 1
+
+
+def nth_prime(n: int) -> int:
+    """Return the nth prime number (1-indexed: nth_prime(1) == 2)."""
+    if n < 1:
+        raise ValueError("n must be a positive integer")
+    count = 0
+    candidate = 1
+    while count < n:
+        candidate = next_prime(candidate)
+        count += 1
+    return candidate
+
+
+def is_palindromic_number(n: int) -> bool:
+    """Return True if n reads the same forwards and backwards."""
+    s = str(n)
+    return s == s[::-1]

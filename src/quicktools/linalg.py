@@ -3,6 +3,7 @@
 Matrices are represented as lists of lists, e.g. [[1, 2], [3, 4]].
 No external dependencies (no numpy) — pure Python.
 """
+import math
 
 
 def matrix_add(a: list[list[float]], b: list[list[float]]) -> list[list[float]]:
@@ -97,3 +98,91 @@ def solve_linear_system(a: list[list[float]], b: list[float]) -> list[float]:
 def trace(a: list[list[float]]) -> float:
     """Sum of the diagonal elements of a square matrix."""
     return sum(a[i][i] for i in range(len(a)))
+
+def dot_product(v1: list[float], v2: list[float]) -> float:
+    """Dot product of two equal-length vectors."""
+    if len(v1) != len(v2):
+        raise ValueError("Vectors must be the same length")
+    return sum(a * b for a, b in zip(v1, v2))
+
+
+def cross_product(v1: list[float], v2: list[float]) -> list[float]:
+    """Cross product of two 3D vectors."""
+    if len(v1) != 3 or len(v2) != 3:
+        raise ValueError("Cross product requires two 3D vectors")
+    return [
+        v1[1] * v2[2] - v1[2] * v2[1],
+        v1[2] * v2[0] - v1[0] * v2[2],
+        v1[0] * v2[1] - v1[1] * v2[0],
+    ]
+
+
+def vector_magnitude(v: list[float]) -> float:
+    """Euclidean length (magnitude) of a vector."""
+    return math.sqrt(sum(x ** 2 for x in v))
+
+
+def normalize_vector(v: list[float]) -> list[float]:
+    """Scale a vector to unit length (magnitude 1)."""
+    mag = vector_magnitude(v)
+    if mag == 0:
+        raise ValueError("Cannot normalize the zero vector")
+    return [x / mag for x in v]
+
+
+def vector_add(v1: list[float], v2: list[float]) -> list[float]:
+    """Add two equal-length vectors."""
+    if len(v1) != len(v2):
+        raise ValueError("Vectors must be the same length")
+    return [a + b for a, b in zip(v1, v2)]
+
+
+def vector_subtract(v1: list[float], v2: list[float]) -> list[float]:
+    """Subtract v2 from v1 (equal-length vectors)."""
+    if len(v1) != len(v2):
+        raise ValueError("Vectors must be the same length")
+    return [a - b for a, b in zip(v1, v2)]
+
+
+def scalar_multiply(a: list[list[float]], scalar: float) -> list[list[float]]:
+    """Multiply every element of a matrix by a scalar."""
+    return [[x * scalar for x in row] for row in a]
+
+
+def matrix_power(a: list[list[float]], n: int) -> list[list[float]]:
+    """Raise a square matrix to the n-th power (n >= 0) via repeated multiplication."""
+    if n < 0:
+        raise ValueError("n must be non-negative")
+    size = len(a)
+    result = identity(size)
+    for _ in range(n):
+        result = matrix_multiply(result, a)
+    return result
+
+
+def is_symmetric(a: list[list[float]]) -> bool:
+    """Return True if a square matrix equals its own transpose."""
+    return a == transpose(a)
+
+
+def rank(a: list[list[float]]) -> int:
+    """Rank of a matrix, computed via Gaussian elimination to row echelon form."""
+    mat = [row[:] for row in a]
+    rows, cols = len(mat), len(mat[0])
+    rank_count = 0
+    for col in range(cols):
+        pivot_row = None
+        for r in range(rank_count, rows):
+            if abs(mat[r][col]) > 1e-12:
+                pivot_row = r
+                break
+        if pivot_row is None:
+            continue
+        mat[rank_count], mat[pivot_row] = mat[pivot_row], mat[rank_count]
+        for r in range(rank_count + 1, rows):
+            factor = mat[r][col] / mat[rank_count][col]
+            mat[r] = [mat[r][k] - factor * mat[rank_count][k] for k in range(cols)]
+        rank_count += 1
+        if rank_count == rows:
+            break
+    return rank_count

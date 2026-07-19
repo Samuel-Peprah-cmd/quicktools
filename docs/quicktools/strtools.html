@@ -65,6 +65,54 @@
             <li>
                     <a class="function" href="#vigenere_cipher">vigenere_cipher</a>
             </li>
+            <li>
+                    <a class="function" href="#longest_common_subsequence">longest_common_subsequence</a>
+            </li>
+            <li>
+                    <a class="function" href="#run_length_encode">run_length_encode</a>
+            </li>
+            <li>
+                    <a class="function" href="#run_length_decode">run_length_decode</a>
+            </li>
+            <li>
+                    <a class="function" href="#jaccard_similarity">jaccard_similarity</a>
+            </li>
+            <li>
+                    <a class="function" href="#word_count">word_count</a>
+            </li>
+            <li>
+                    <a class="function" href="#char_frequency">char_frequency</a>
+            </li>
+            <li>
+                    <a class="function" href="#most_common_word">most_common_word</a>
+            </li>
+            <li>
+                    <a class="function" href="#title_case">title_case</a>
+            </li>
+            <li>
+                    <a class="function" href="#remove_vowels">remove_vowels</a>
+            </li>
+            <li>
+                    <a class="function" href="#count_vowels_consonants">count_vowels_consonants</a>
+            </li>
+            <li>
+                    <a class="function" href="#hash_text">hash_text</a>
+            </li>
+            <li>
+                    <a class="function" href="#is_pangram">is_pangram</a>
+            </li>
+            <li>
+                    <a class="function" href="#wrap_text">wrap_text</a>
+            </li>
+            <li>
+                    <a class="function" href="#longest_word">longest_word</a>
+            </li>
+            <li>
+                    <a class="function" href="#base64_encode">base64_encode</a>
+            </li>
+            <li>
+                    <a class="function" href="#base64_decode">base64_decode</a>
+            </li>
     </ul>
 
 
@@ -194,6 +242,136 @@
 </span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>        <span class="k">else</span><span class="p">:</span>
 </span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span>
 </span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a>    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="k">def</span><span class="w"> </span><span class="nf">longest_common_subsequence</span><span class="p">(</span><span class="n">s1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">s2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;The longest sequence of characters that appears in both strings, in order (not necessarily contiguous).&quot;&quot;&quot;</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>    <span class="n">dp</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>            <span class="k">if</span> <span class="n">s1</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">s2</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a>                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a>                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a>    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="k">def</span><span class="w"> </span><span class="nf">run_length_encode</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Compress text using run-length encoding, e.g. &#39;aaabbc&#39; -&gt; &#39;3a2b1c&#39;.&quot;&quot;&quot;</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>    <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>    <span class="n">prev</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a>    <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a>        <span class="k">if</span> <span class="n">ch</span> <span class="o">==</span> <span class="n">prev</span><span class="p">:</span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a>            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">count</span><span class="si">}{</span><span class="n">prev</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a>            <span class="n">prev</span> <span class="o">=</span> <span class="n">ch</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>            <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">count</span><span class="si">}{</span><span class="n">prev</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="k">def</span><span class="w"> </span><span class="nf">run_length_decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Decompress a run-length encoded string produced by run_length_encode().&quot;&quot;&quot;</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a>    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>    <span class="n">count_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a>    <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">encoded</span><span class="p">:</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a>        <span class="k">if</span> <span class="n">ch</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>            <span class="n">count_str</span> <span class="o">+=</span> <span class="n">ch</span>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a>            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ch</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">count_str</span><span class="p">))</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a>            <span class="n">count_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a>    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a><span class="k">def</span><span class="w"> </span><span class="nf">jaccard_similarity</span><span class="p">(</span><span class="n">s1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">s2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Word-level similarity between two texts: size of the word intersection over the union (0 to 1).&quot;&quot;&quot;</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>    <span class="n">words1</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-zA-Z&#39;]+&quot;</span><span class="p">,</span> <span class="n">s1</span><span class="o">.</span><span class="n">lower</span><span class="p">()))</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>    <span class="n">words2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-zA-Z&#39;]+&quot;</span><span class="p">,</span> <span class="n">s2</span><span class="o">.</span><span class="n">lower</span><span class="p">()))</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">words1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">words2</span><span class="p">:</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>        <span class="k">return</span> <span class="mf">1.0</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">words1</span> <span class="o">&amp;</span> <span class="n">words2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">words1</span> <span class="o">|</span> <span class="n">words2</span><span class="p">)</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a><span class="k">def</span><span class="w"> </span><span class="nf">word_count</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Count the number of words in text.&quot;&quot;&quot;</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-zA-Z&#39;]+&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a><span class="k">def</span><span class="w"> </span><span class="nf">char_frequency</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Count occurrences of each character in text (case-sensitive, includes all characters).&quot;&quot;&quot;</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>    <span class="n">freq</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>    <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>        <span class="n">freq</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>    <span class="k">return</span> <span class="n">freq</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="k">def</span><span class="w"> </span><span class="nf">most_common_word</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the most frequently occurring word in text (case-insensitive).&quot;&quot;&quot;</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>    <span class="n">freq</span> <span class="o">=</span> <span class="n">word_frequency</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">freq</span><span class="p">:</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Text contains no words&quot;</span><span class="p">)</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">freq</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="k">def</span><span class="w"> </span><span class="nf">title_case</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Capitalize the first letter of every word in text.&quot;&quot;&quot;</span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a>    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a><span class="k">def</span><span class="w"> </span><span class="nf">remove_vowels</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove all vowels (a, e, i, o, u) from text, case-insensitive.&quot;&quot;&quot;</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[aeiouAEIOU]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a><span class="k">def</span><span class="w"> </span><span class="nf">count_vowels_consonants</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Count the number of vowels and consonants in text (letters only).&quot;&quot;&quot;</span>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a>    <span class="n">vowels</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">ch</span> <span class="ow">in</span> <span class="s2">&quot;aeiou&quot;</span><span class="p">)</span>
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>    <span class="n">consonants</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">ch</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s2">&quot;aeiou&quot;</span><span class="p">)</span>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a>    <span class="k">return</span> <span class="n">vowels</span><span class="p">,</span> <span class="n">consonants</span>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="k">def</span><span class="w"> </span><span class="nf">hash_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sha256&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the hex digest of text using the given hash algorithm (e.g. &#39;md5&#39;, &#39;sha1&#39;, &#39;sha256&#39;).&quot;&quot;&quot;</span>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a>    <span class="n">h</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">algorithm</span><span class="p">)</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>    <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>    <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>
+</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a><span class="k">def</span><span class="w"> </span><span class="nf">is_pangram</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if text contains every letter of the alphabet at least once.&quot;&quot;&quot;</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a>    <span class="n">letters</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ch</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">ch</span><span class="o">.</span><span class="n">isalpha</span><span class="p">())</span>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">26</span>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a>
+</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a>
+</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a><span class="k">def</span><span class="w"> </span><span class="nf">wrap_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">70</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrap text so no line exceeds `width` characters.&quot;&quot;&quot;</span>
+</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>    <span class="k">return</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
+</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>
+</span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a>
+</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a><span class="k">def</span><span class="w"> </span><span class="nf">longest_word</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the longest word in text (first one found in case of a tie).&quot;&quot;&quot;</span>
+</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a>    <span class="n">words</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-zA-Z&#39;]+&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">words</span><span class="p">:</span>
+</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Text contains no words&quot;</span><span class="p">)</span>
+</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a>    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
+</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a>
+</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a>
+</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a><span class="k">def</span><span class="w"> </span><span class="nf">base64_encode</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode text into base64.&quot;&quot;&quot;</span>
+</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a>    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a>
+</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a>
+</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a><span class="k">def</span><span class="w"> </span><span class="nf">base64_decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode a base64-encoded string back into text.&quot;&quot;&quot;</span>
+</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a>    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">encoded</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -486,6 +664,409 @@ needed to turn s1 into s2.</p>
 
 
             <div class="docstring"><p>Encode or decode text using the Vigenere cipher with the given key.</p>
+</div>
+
+
+                </section>
+                <section id="longest_common_subsequence">
+                            <input id="longest_common_subsequence-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">longest_common_subsequence</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">s1</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">s2</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="longest_common_subsequence-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#longest_common_subsequence"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="longest_common_subsequence-109"><a href="#longest_common_subsequence-109"><span class="linenos">109</span></a><span class="k">def</span><span class="w"> </span><span class="nf">longest_common_subsequence</span><span class="p">(</span><span class="n">s1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">s2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="longest_common_subsequence-110"><a href="#longest_common_subsequence-110"><span class="linenos">110</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;The longest sequence of characters that appears in both strings, in order (not necessarily contiguous).&quot;&quot;&quot;</span>
+</span><span id="longest_common_subsequence-111"><a href="#longest_common_subsequence-111"><span class="linenos">111</span></a>    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span>
+</span><span id="longest_common_subsequence-112"><a href="#longest_common_subsequence-112"><span class="linenos">112</span></a>    <span class="n">dp</span> <span class="o">=</span> <span class="p">[[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+</span><span id="longest_common_subsequence-113"><a href="#longest_common_subsequence-113"><span class="linenos">113</span></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="longest_common_subsequence-114"><a href="#longest_common_subsequence-114"><span class="linenos">114</span></a>        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="longest_common_subsequence-115"><a href="#longest_common_subsequence-115"><span class="linenos">115</span></a>            <span class="k">if</span> <span class="n">s1</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">s2</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+</span><span id="longest_common_subsequence-116"><a href="#longest_common_subsequence-116"><span class="linenos">116</span></a>                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">s1</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+</span><span id="longest_common_subsequence-117"><a href="#longest_common_subsequence-117"><span class="linenos">117</span></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="longest_common_subsequence-118"><a href="#longest_common_subsequence-118"><span class="linenos">118</span></a>                <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dp</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">j</span><span class="p">],</span> <span class="n">dp</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
+</span><span id="longest_common_subsequence-119"><a href="#longest_common_subsequence-119"><span class="linenos">119</span></a>    <span class="k">return</span> <span class="n">dp</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="n">n</span><span class="p">]</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>The longest sequence of characters that appears in both strings, in order (not necessarily contiguous).</p>
+</div>
+
+
+                </section>
+                <section id="run_length_encode">
+                            <input id="run_length_encode-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">run_length_encode</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="run_length_encode-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#run_length_encode"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="run_length_encode-122"><a href="#run_length_encode-122"><span class="linenos">122</span></a><span class="k">def</span><span class="w"> </span><span class="nf">run_length_encode</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="run_length_encode-123"><a href="#run_length_encode-123"><span class="linenos">123</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Compress text using run-length encoding, e.g. &#39;aaabbc&#39; -&gt; &#39;3a2b1c&#39;.&quot;&quot;&quot;</span>
+</span><span id="run_length_encode-124"><a href="#run_length_encode-124"><span class="linenos">124</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">text</span><span class="p">:</span>
+</span><span id="run_length_encode-125"><a href="#run_length_encode-125"><span class="linenos">125</span></a>        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+</span><span id="run_length_encode-126"><a href="#run_length_encode-126"><span class="linenos">126</span></a>    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="run_length_encode-127"><a href="#run_length_encode-127"><span class="linenos">127</span></a>    <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="run_length_encode-128"><a href="#run_length_encode-128"><span class="linenos">128</span></a>    <span class="n">prev</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="run_length_encode-129"><a href="#run_length_encode-129"><span class="linenos">129</span></a>    <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+</span><span id="run_length_encode-130"><a href="#run_length_encode-130"><span class="linenos">130</span></a>        <span class="k">if</span> <span class="n">ch</span> <span class="o">==</span> <span class="n">prev</span><span class="p">:</span>
+</span><span id="run_length_encode-131"><a href="#run_length_encode-131"><span class="linenos">131</span></a>            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="run_length_encode-132"><a href="#run_length_encode-132"><span class="linenos">132</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="run_length_encode-133"><a href="#run_length_encode-133"><span class="linenos">133</span></a>            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">count</span><span class="si">}{</span><span class="n">prev</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="run_length_encode-134"><a href="#run_length_encode-134"><span class="linenos">134</span></a>            <span class="n">prev</span> <span class="o">=</span> <span class="n">ch</span>
+</span><span id="run_length_encode-135"><a href="#run_length_encode-135"><span class="linenos">135</span></a>            <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+</span><span id="run_length_encode-136"><a href="#run_length_encode-136"><span class="linenos">136</span></a>    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">count</span><span class="si">}{</span><span class="n">prev</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="run_length_encode-137"><a href="#run_length_encode-137"><span class="linenos">137</span></a>    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Compress text using run-length encoding, e.g. 'aaabbc' -> '3a2b1c'.</p>
+</div>
+
+
+                </section>
+                <section id="run_length_decode">
+                            <input id="run_length_decode-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">run_length_decode</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">encoded</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="run_length_decode-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#run_length_decode"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="run_length_decode-140"><a href="#run_length_decode-140"><span class="linenos">140</span></a><span class="k">def</span><span class="w"> </span><span class="nf">run_length_decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="run_length_decode-141"><a href="#run_length_decode-141"><span class="linenos">141</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Decompress a run-length encoded string produced by run_length_encode().&quot;&quot;&quot;</span>
+</span><span id="run_length_decode-142"><a href="#run_length_decode-142"><span class="linenos">142</span></a>    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="run_length_decode-143"><a href="#run_length_decode-143"><span class="linenos">143</span></a>    <span class="n">count_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span id="run_length_decode-144"><a href="#run_length_decode-144"><span class="linenos">144</span></a>    <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">encoded</span><span class="p">:</span>
+</span><span id="run_length_decode-145"><a href="#run_length_decode-145"><span class="linenos">145</span></a>        <span class="k">if</span> <span class="n">ch</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+</span><span id="run_length_decode-146"><a href="#run_length_decode-146"><span class="linenos">146</span></a>            <span class="n">count_str</span> <span class="o">+=</span> <span class="n">ch</span>
+</span><span id="run_length_decode-147"><a href="#run_length_decode-147"><span class="linenos">147</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="run_length_decode-148"><a href="#run_length_decode-148"><span class="linenos">148</span></a>            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ch</span> <span class="o">*</span> <span class="nb">int</span><span class="p">(</span><span class="n">count_str</span><span class="p">))</span>
+</span><span id="run_length_decode-149"><a href="#run_length_decode-149"><span class="linenos">149</span></a>            <span class="n">count_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+</span><span id="run_length_decode-150"><a href="#run_length_decode-150"><span class="linenos">150</span></a>    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Decompress a run-length encoded string produced by run_length_encode().</p>
+</div>
+
+
+                </section>
+                <section id="jaccard_similarity">
+                            <input id="jaccard_similarity-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">jaccard_similarity</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">s1</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">s2</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">float</span>:</span></span>
+
+                <label class="view-source-button" for="jaccard_similarity-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#jaccard_similarity"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="jaccard_similarity-153"><a href="#jaccard_similarity-153"><span class="linenos">153</span></a><span class="k">def</span><span class="w"> </span><span class="nf">jaccard_similarity</span><span class="p">(</span><span class="n">s1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">s2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+</span><span id="jaccard_similarity-154"><a href="#jaccard_similarity-154"><span class="linenos">154</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Word-level similarity between two texts: size of the word intersection over the union (0 to 1).&quot;&quot;&quot;</span>
+</span><span id="jaccard_similarity-155"><a href="#jaccard_similarity-155"><span class="linenos">155</span></a>    <span class="n">words1</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-zA-Z&#39;]+&quot;</span><span class="p">,</span> <span class="n">s1</span><span class="o">.</span><span class="n">lower</span><span class="p">()))</span>
+</span><span id="jaccard_similarity-156"><a href="#jaccard_similarity-156"><span class="linenos">156</span></a>    <span class="n">words2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-zA-Z&#39;]+&quot;</span><span class="p">,</span> <span class="n">s2</span><span class="o">.</span><span class="n">lower</span><span class="p">()))</span>
+</span><span id="jaccard_similarity-157"><a href="#jaccard_similarity-157"><span class="linenos">157</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">words1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">words2</span><span class="p">:</span>
+</span><span id="jaccard_similarity-158"><a href="#jaccard_similarity-158"><span class="linenos">158</span></a>        <span class="k">return</span> <span class="mf">1.0</span>
+</span><span id="jaccard_similarity-159"><a href="#jaccard_similarity-159"><span class="linenos">159</span></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">words1</span> <span class="o">&amp;</span> <span class="n">words2</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">words1</span> <span class="o">|</span> <span class="n">words2</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Word-level similarity between two texts: size of the word intersection over the union (0 to 1).</p>
+</div>
+
+
+                </section>
+                <section id="word_count">
+                            <input id="word_count-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">word_count</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+
+                <label class="view-source-button" for="word_count-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#word_count"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="word_count-162"><a href="#word_count-162"><span class="linenos">162</span></a><span class="k">def</span><span class="w"> </span><span class="nf">word_count</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="word_count-163"><a href="#word_count-163"><span class="linenos">163</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Count the number of words in text.&quot;&quot;&quot;</span>
+</span><span id="word_count-164"><a href="#word_count-164"><span class="linenos">164</span></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-zA-Z&#39;]+&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Count the number of words in text.</p>
+</div>
+
+
+                </section>
+                <section id="char_frequency">
+                            <input id="char_frequency-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">char_frequency</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="char_frequency-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#char_frequency"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="char_frequency-167"><a href="#char_frequency-167"><span class="linenos">167</span></a><span class="k">def</span><span class="w"> </span><span class="nf">char_frequency</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+</span><span id="char_frequency-168"><a href="#char_frequency-168"><span class="linenos">168</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Count occurrences of each character in text (case-sensitive, includes all characters).&quot;&quot;&quot;</span>
+</span><span id="char_frequency-169"><a href="#char_frequency-169"><span class="linenos">169</span></a>    <span class="n">freq</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="char_frequency-170"><a href="#char_frequency-170"><span class="linenos">170</span></a>    <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+</span><span id="char_frequency-171"><a href="#char_frequency-171"><span class="linenos">171</span></a>        <span class="n">freq</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span id="char_frequency-172"><a href="#char_frequency-172"><span class="linenos">172</span></a>    <span class="k">return</span> <span class="n">freq</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Count occurrences of each character in text (case-sensitive, includes all characters).</p>
+</div>
+
+
+                </section>
+                <section id="most_common_word">
+                            <input id="most_common_word-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">most_common_word</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="most_common_word-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#most_common_word"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="most_common_word-175"><a href="#most_common_word-175"><span class="linenos">175</span></a><span class="k">def</span><span class="w"> </span><span class="nf">most_common_word</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="most_common_word-176"><a href="#most_common_word-176"><span class="linenos">176</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the most frequently occurring word in text (case-insensitive).&quot;&quot;&quot;</span>
+</span><span id="most_common_word-177"><a href="#most_common_word-177"><span class="linenos">177</span></a>    <span class="n">freq</span> <span class="o">=</span> <span class="n">word_frequency</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</span><span id="most_common_word-178"><a href="#most_common_word-178"><span class="linenos">178</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">freq</span><span class="p">:</span>
+</span><span id="most_common_word-179"><a href="#most_common_word-179"><span class="linenos">179</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Text contains no words&quot;</span><span class="p">)</span>
+</span><span id="most_common_word-180"><a href="#most_common_word-180"><span class="linenos">180</span></a>    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">freq</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Return the most frequently occurring word in text (case-insensitive).</p>
+</div>
+
+
+                </section>
+                <section id="title_case">
+                            <input id="title_case-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">title_case</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="title_case-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#title_case"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="title_case-183"><a href="#title_case-183"><span class="linenos">183</span></a><span class="k">def</span><span class="w"> </span><span class="nf">title_case</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="title_case-184"><a href="#title_case-184"><span class="linenos">184</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Capitalize the first letter of every word in text.&quot;&quot;&quot;</span>
+</span><span id="title_case-185"><a href="#title_case-185"><span class="linenos">185</span></a>    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Capitalize the first letter of every word in text.</p>
+</div>
+
+
+                </section>
+                <section id="remove_vowels">
+                            <input id="remove_vowels-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">remove_vowels</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="remove_vowels-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#remove_vowels"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="remove_vowels-188"><a href="#remove_vowels-188"><span class="linenos">188</span></a><span class="k">def</span><span class="w"> </span><span class="nf">remove_vowels</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="remove_vowels-189"><a href="#remove_vowels-189"><span class="linenos">189</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove all vowels (a, e, i, o, u) from text, case-insensitive.&quot;&quot;&quot;</span>
+</span><span id="remove_vowels-190"><a href="#remove_vowels-190"><span class="linenos">190</span></a>    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[aeiouAEIOU]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Remove all vowels (a, e, i, o, u) from text, case-insensitive.</p>
+</div>
+
+
+                </section>
+                <section id="count_vowels_consonants">
+                            <input id="count_vowels_consonants-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">count_vowels_consonants</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="count_vowels_consonants-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#count_vowels_consonants"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="count_vowels_consonants-193"><a href="#count_vowels_consonants-193"><span class="linenos">193</span></a><span class="k">def</span><span class="w"> </span><span class="nf">count_vowels_consonants</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+</span><span id="count_vowels_consonants-194"><a href="#count_vowels_consonants-194"><span class="linenos">194</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Count the number of vowels and consonants in text (letters only).&quot;&quot;&quot;</span>
+</span><span id="count_vowels_consonants-195"><a href="#count_vowels_consonants-195"><span class="linenos">195</span></a>    <span class="n">vowels</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">ch</span> <span class="ow">in</span> <span class="s2">&quot;aeiou&quot;</span><span class="p">)</span>
+</span><span id="count_vowels_consonants-196"><a href="#count_vowels_consonants-196"><span class="linenos">196</span></a>    <span class="n">consonants</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">ch</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s2">&quot;aeiou&quot;</span><span class="p">)</span>
+</span><span id="count_vowels_consonants-197"><a href="#count_vowels_consonants-197"><span class="linenos">197</span></a>    <span class="k">return</span> <span class="n">vowels</span><span class="p">,</span> <span class="n">consonants</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Count the number of vowels and consonants in text (letters only).</p>
+</div>
+
+
+                </section>
+                <section id="hash_text">
+                            <input id="hash_text-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">hash_text</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">algorithm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;sha256&#39;</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="hash_text-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#hash_text"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="hash_text-200"><a href="#hash_text-200"><span class="linenos">200</span></a><span class="k">def</span><span class="w"> </span><span class="nf">hash_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">algorithm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sha256&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="hash_text-201"><a href="#hash_text-201"><span class="linenos">201</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the hex digest of text using the given hash algorithm (e.g. &#39;md5&#39;, &#39;sha1&#39;, &#39;sha256&#39;).&quot;&quot;&quot;</span>
+</span><span id="hash_text-202"><a href="#hash_text-202"><span class="linenos">202</span></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+</span><span id="hash_text-203"><a href="#hash_text-203"><span class="linenos">203</span></a>    <span class="n">h</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">algorithm</span><span class="p">)</span>
+</span><span id="hash_text-204"><a href="#hash_text-204"><span class="linenos">204</span></a>    <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+</span><span id="hash_text-205"><a href="#hash_text-205"><span class="linenos">205</span></a>    <span class="k">return</span> <span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Return the hex digest of text using the given hash algorithm (e.g. 'md5', 'sha1', 'sha256').</p>
+</div>
+
+
+                </section>
+                <section id="is_pangram">
+                            <input id="is_pangram-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">is_pangram</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+                <label class="view-source-button" for="is_pangram-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#is_pangram"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="is_pangram-208"><a href="#is_pangram-208"><span class="linenos">208</span></a><span class="k">def</span><span class="w"> </span><span class="nf">is_pangram</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="is_pangram-209"><a href="#is_pangram-209"><span class="linenos">209</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if text contains every letter of the alphabet at least once.&quot;&quot;&quot;</span>
+</span><span id="is_pangram-210"><a href="#is_pangram-210"><span class="linenos">210</span></a>    <span class="n">letters</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">ch</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">ch</span><span class="o">.</span><span class="n">isalpha</span><span class="p">())</span>
+</span><span id="is_pangram-211"><a href="#is_pangram-211"><span class="linenos">211</span></a>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">letters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">26</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Return True if text contains every letter of the alphabet at least once.</p>
+</div>
+
+
+                </section>
+                <section id="wrap_text">
+                            <input id="wrap_text-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">wrap_text</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">70</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="wrap_text-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#wrap_text"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="wrap_text-214"><a href="#wrap_text-214"><span class="linenos">214</span></a><span class="k">def</span><span class="w"> </span><span class="nf">wrap_text</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">70</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="wrap_text-215"><a href="#wrap_text-215"><span class="linenos">215</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrap text so no line exceeds `width` characters.&quot;&quot;&quot;</span>
+</span><span id="wrap_text-216"><a href="#wrap_text-216"><span class="linenos">216</span></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">textwrap</span>
+</span><span id="wrap_text-217"><a href="#wrap_text-217"><span class="linenos">217</span></a>    <span class="k">return</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Wrap text so no line exceeds <code>width</code> characters.</p>
+</div>
+
+
+                </section>
+                <section id="longest_word">
+                            <input id="longest_word-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">longest_word</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="longest_word-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#longest_word"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="longest_word-220"><a href="#longest_word-220"><span class="linenos">220</span></a><span class="k">def</span><span class="w"> </span><span class="nf">longest_word</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="longest_word-221"><a href="#longest_word-221"><span class="linenos">221</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the longest word in text (first one found in case of a tie).&quot;&quot;&quot;</span>
+</span><span id="longest_word-222"><a href="#longest_word-222"><span class="linenos">222</span></a>    <span class="n">words</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;[a-zA-Z&#39;]+&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+</span><span id="longest_word-223"><a href="#longest_word-223"><span class="linenos">223</span></a>    <span class="k">if</span> <span class="ow">not</span> <span class="n">words</span><span class="p">:</span>
+</span><span id="longest_word-224"><a href="#longest_word-224"><span class="linenos">224</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Text contains no words&quot;</span><span class="p">)</span>
+</span><span id="longest_word-225"><a href="#longest_word-225"><span class="linenos">225</span></a>    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Return the longest word in text (first one found in case of a tie).</p>
+</div>
+
+
+                </section>
+                <section id="base64_encode">
+                            <input id="base64_encode-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">base64_encode</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">text</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="base64_encode-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#base64_encode"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="base64_encode-228"><a href="#base64_encode-228"><span class="linenos">228</span></a><span class="k">def</span><span class="w"> </span><span class="nf">base64_encode</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="base64_encode-229"><a href="#base64_encode-229"><span class="linenos">229</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Encode text into base64.&quot;&quot;&quot;</span>
+</span><span id="base64_encode-230"><a href="#base64_encode-230"><span class="linenos">230</span></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+</span><span id="base64_encode-231"><a href="#base64_encode-231"><span class="linenos">231</span></a>    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Encode text into base64.</p>
+</div>
+
+
+                </section>
+                <section id="base64_decode">
+                            <input id="base64_decode-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">base64_decode</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">encoded</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">str</span>:</span></span>
+
+                <label class="view-source-button" for="base64_decode-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#base64_decode"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="base64_decode-234"><a href="#base64_decode-234"><span class="linenos">234</span></a><span class="k">def</span><span class="w"> </span><span class="nf">base64_decode</span><span class="p">(</span><span class="n">encoded</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="base64_decode-235"><a href="#base64_decode-235"><span class="linenos">235</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Decode a base64-encoded string back into text.&quot;&quot;&quot;</span>
+</span><span id="base64_decode-236"><a href="#base64_decode-236"><span class="linenos">236</span></a>    <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+</span><span id="base64_decode-237"><a href="#base64_decode-237"><span class="linenos">237</span></a>    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">encoded</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Decode a base64-encoded string back into text.</p>
 </div>
 
 

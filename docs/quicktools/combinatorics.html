@@ -47,6 +47,21 @@
             <li>
                     <a class="function" href="#binomial_expansion_coeffs">binomial_expansion_coeffs</a>
             </li>
+            <li>
+                    <a class="function" href="#multinomial_coefficient">multinomial_coefficient</a>
+            </li>
+            <li>
+                    <a class="function" href="#stirling_second_kind">stirling_second_kind</a>
+            </li>
+            <li>
+                    <a class="function" href="#derangements_count">derangements_count</a>
+            </li>
+            <li>
+                    <a class="function" href="#integer_partitions_count">integer_partitions_count</a>
+            </li>
+            <li>
+                    <a class="function" href="#combinations_with_replacement_count">combinations_with_replacement_count</a>
+            </li>
     </ul>
 
 
@@ -106,6 +121,58 @@
 </span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a><span class="k">def</span><span class="w"> </span><span class="nf">binomial_expansion_coeffs</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 </span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Coefficients of (x + y)^n, i.e. row n of Pascal&#39;s triangle.&quot;&quot;&quot;</span>
 </span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>    <span class="k">return</span> <span class="p">[</span><span class="n">combinations_count</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="k">def</span><span class="w"> </span><span class="nf">multinomial_coefficient</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of ways to divide n items into groups of sizes ks (which must sum to n).&quot;&quot;&quot;</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a>    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ks</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The group sizes must sum to n&quot;</span><span class="p">)</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ks</span><span class="p">:</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>        <span class="n">result</span> <span class="o">//=</span> <span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>    <span class="k">return</span> <span class="n">result</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>
+</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a><span class="k">def</span><span class="w"> </span><span class="nf">stirling_second_kind</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of ways to partition a set of n objects into k non-empty subsets.&quot;&quot;&quot;</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a>        <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>    <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="n">n</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>        <span class="k">return</span> <span class="mi">1</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>        <span class="n">sign</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a>        <span class="n">total</span> <span class="o">+=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">combinations_count</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span> <span class="o">**</span> <span class="n">n</span><span class="p">)</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>    <span class="k">return</span> <span class="n">total</span> <span class="o">//</span> <span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>
+</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>
+</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a><span class="k">def</span><span class="w"> </span><span class="nf">derangements_count</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of permutations of n items where no item ends up in its original position.&quot;&quot;&quot;</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>        <span class="k">return</span> <span class="mi">1</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a>        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a>    <span class="k">return</span> <span class="n">b</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a>
+</span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a>
+</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a><span class="k">def</span><span class="w"> </span><span class="nf">integer_partitions_count</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of ways to write n as a sum of positive integers, order not mattering.&quot;&quot;&quot;</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a>    <span class="n">partitions</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a>    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a>            <span class="n">partitions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">partitions</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos">83</span></a>    <span class="k">return</span> <span class="n">partitions</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos">84</span></a>
+</span><span id="L-85"><a href="#L-85"><span class="linenos">85</span></a>
+</span><span id="L-86"><a href="#L-86"><span class="linenos">86</span></a><span class="k">def</span><span class="w"> </span><span class="nf">combinations_with_replacement_count</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos">87</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of ways to choose r items from n types, with repetition allowed and order not mattering.&quot;&quot;&quot;</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos">88</span></a>    <span class="k">return</span> <span class="n">combinations_count</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -225,6 +292,144 @@
 
 
             <div class="docstring"><p>Coefficients of (x + y)^n, i.e. row n of Pascal's triangle.</p>
+</div>
+
+
+                </section>
+                <section id="multinomial_coefficient">
+                            <input id="multinomial_coefficient-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">multinomial_coefficient</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">n</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">ks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+
+                <label class="view-source-button" for="multinomial_coefficient-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#multinomial_coefficient"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="multinomial_coefficient-39"><a href="#multinomial_coefficient-39"><span class="linenos">39</span></a><span class="k">def</span><span class="w"> </span><span class="nf">multinomial_coefficient</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">ks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="multinomial_coefficient-40"><a href="#multinomial_coefficient-40"><span class="linenos">40</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of ways to divide n items into groups of sizes ks (which must sum to n).&quot;&quot;&quot;</span>
+</span><span id="multinomial_coefficient-41"><a href="#multinomial_coefficient-41"><span class="linenos">41</span></a>    <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">ks</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
+</span><span id="multinomial_coefficient-42"><a href="#multinomial_coefficient-42"><span class="linenos">42</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The group sizes must sum to n&quot;</span><span class="p">)</span>
+</span><span id="multinomial_coefficient-43"><a href="#multinomial_coefficient-43"><span class="linenos">43</span></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</span><span id="multinomial_coefficient-44"><a href="#multinomial_coefficient-44"><span class="linenos">44</span></a>    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ks</span><span class="p">:</span>
+</span><span id="multinomial_coefficient-45"><a href="#multinomial_coefficient-45"><span class="linenos">45</span></a>        <span class="n">result</span> <span class="o">//=</span> <span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span><span id="multinomial_coefficient-46"><a href="#multinomial_coefficient-46"><span class="linenos">46</span></a>    <span class="k">return</span> <span class="n">result</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Number of ways to divide n items into groups of sizes ks (which must sum to n).</p>
+</div>
+
+
+                </section>
+                <section id="stirling_second_kind">
+                            <input id="stirling_second_kind-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">stirling_second_kind</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">n</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">k</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+
+                <label class="view-source-button" for="stirling_second_kind-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#stirling_second_kind"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="stirling_second_kind-49"><a href="#stirling_second_kind-49"><span class="linenos">49</span></a><span class="k">def</span><span class="w"> </span><span class="nf">stirling_second_kind</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="stirling_second_kind-50"><a href="#stirling_second_kind-50"><span class="linenos">50</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of ways to partition a set of n objects into k non-empty subsets.&quot;&quot;&quot;</span>
+</span><span id="stirling_second_kind-51"><a href="#stirling_second_kind-51"><span class="linenos">51</span></a>    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="stirling_second_kind-52"><a href="#stirling_second_kind-52"><span class="linenos">52</span></a>        <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+</span><span id="stirling_second_kind-53"><a href="#stirling_second_kind-53"><span class="linenos">53</span></a>    <span class="k">if</span> <span class="n">k</span> <span class="o">&gt;</span> <span class="n">n</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="stirling_second_kind-54"><a href="#stirling_second_kind-54"><span class="linenos">54</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="stirling_second_kind-55"><a href="#stirling_second_kind-55"><span class="linenos">55</span></a>    <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+</span><span id="stirling_second_kind-56"><a href="#stirling_second_kind-56"><span class="linenos">56</span></a>        <span class="k">return</span> <span class="mi">1</span>
+</span><span id="stirling_second_kind-57"><a href="#stirling_second_kind-57"><span class="linenos">57</span></a>    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="stirling_second_kind-58"><a href="#stirling_second_kind-58"><span class="linenos">58</span></a>    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="stirling_second_kind-59"><a href="#stirling_second_kind-59"><span class="linenos">59</span></a>        <span class="n">sign</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span>
+</span><span id="stirling_second_kind-60"><a href="#stirling_second_kind-60"><span class="linenos">60</span></a>        <span class="n">total</span> <span class="o">+=</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">combinations_count</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span> <span class="o">**</span> <span class="n">n</span><span class="p">)</span>
+</span><span id="stirling_second_kind-61"><a href="#stirling_second_kind-61"><span class="linenos">61</span></a>    <span class="k">return</span> <span class="n">total</span> <span class="o">//</span> <span class="n">math</span><span class="o">.</span><span class="n">factorial</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Number of ways to partition a set of n objects into k non-empty subsets.</p>
+</div>
+
+
+                </section>
+                <section id="derangements_count">
+                            <input id="derangements_count-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">derangements_count</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">n</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+
+                <label class="view-source-button" for="derangements_count-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#derangements_count"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="derangements_count-64"><a href="#derangements_count-64"><span class="linenos">64</span></a><span class="k">def</span><span class="w"> </span><span class="nf">derangements_count</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="derangements_count-65"><a href="#derangements_count-65"><span class="linenos">65</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of permutations of n items where no item ends up in its original position.&quot;&quot;&quot;</span>
+</span><span id="derangements_count-66"><a href="#derangements_count-66"><span class="linenos">66</span></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="derangements_count-67"><a href="#derangements_count-67"><span class="linenos">67</span></a>        <span class="k">return</span> <span class="mi">1</span>
+</span><span id="derangements_count-68"><a href="#derangements_count-68"><span class="linenos">68</span></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+</span><span id="derangements_count-69"><a href="#derangements_count-69"><span class="linenos">69</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="derangements_count-70"><a href="#derangements_count-70"><span class="linenos">70</span></a>    <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+</span><span id="derangements_count-71"><a href="#derangements_count-71"><span class="linenos">71</span></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="derangements_count-72"><a href="#derangements_count-72"><span class="linenos">72</span></a>        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+</span><span id="derangements_count-73"><a href="#derangements_count-73"><span class="linenos">73</span></a>    <span class="k">return</span> <span class="n">b</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Number of permutations of n items where no item ends up in its original position.</p>
+</div>
+
+
+                </section>
+                <section id="integer_partitions_count">
+                            <input id="integer_partitions_count-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">integer_partitions_count</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">n</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+
+                <label class="view-source-button" for="integer_partitions_count-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#integer_partitions_count"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="integer_partitions_count-76"><a href="#integer_partitions_count-76"><span class="linenos">76</span></a><span class="k">def</span><span class="w"> </span><span class="nf">integer_partitions_count</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="integer_partitions_count-77"><a href="#integer_partitions_count-77"><span class="linenos">77</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of ways to write n as a sum of positive integers, order not mattering.&quot;&quot;&quot;</span>
+</span><span id="integer_partitions_count-78"><a href="#integer_partitions_count-78"><span class="linenos">78</span></a>    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="integer_partitions_count-79"><a href="#integer_partitions_count-79"><span class="linenos">79</span></a>        <span class="k">return</span> <span class="mi">0</span>
+</span><span id="integer_partitions_count-80"><a href="#integer_partitions_count-80"><span class="linenos">80</span></a>    <span class="n">partitions</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+</span><span id="integer_partitions_count-81"><a href="#integer_partitions_count-81"><span class="linenos">81</span></a>    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="integer_partitions_count-82"><a href="#integer_partitions_count-82"><span class="linenos">82</span></a>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span><span id="integer_partitions_count-83"><a href="#integer_partitions_count-83"><span class="linenos">83</span></a>            <span class="n">partitions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">partitions</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="n">k</span><span class="p">]</span>
+</span><span id="integer_partitions_count-84"><a href="#integer_partitions_count-84"><span class="linenos">84</span></a>    <span class="k">return</span> <span class="n">partitions</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Number of ways to write n as a sum of positive integers, order not mattering.</p>
+</div>
+
+
+                </section>
+                <section id="combinations_with_replacement_count">
+                            <input id="combinations_with_replacement_count-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">combinations_with_replacement_count</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">n</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">r</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="nb">int</span>:</span></span>
+
+                <label class="view-source-button" for="combinations_with_replacement_count-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#combinations_with_replacement_count"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="combinations_with_replacement_count-87"><a href="#combinations_with_replacement_count-87"><span class="linenos">87</span></a><span class="k">def</span><span class="w"> </span><span class="nf">combinations_with_replacement_count</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="combinations_with_replacement_count-88"><a href="#combinations_with_replacement_count-88"><span class="linenos">88</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Number of ways to choose r items from n types, with repetition allowed and order not mattering.&quot;&quot;&quot;</span>
+</span><span id="combinations_with_replacement_count-89"><a href="#combinations_with_replacement_count-89"><span class="linenos">89</span></a>    <span class="k">return</span> <span class="n">combinations_count</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">r</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Number of ways to choose r items from n types, with repetition allowed and order not mattering.</p>
 </div>
 
 
