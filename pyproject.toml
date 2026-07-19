@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quicktools-atom"
+version = "0.2.1"
+description = "Math and string utilities with a bundled CLI, by AtomDev Studios"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+    { name = "Samuel Peprah", email = "" }
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Samuel-Peprah-cmd/quicktools"
+Repository = "https://github.com/Samuel-Peprah-cmd/quicktools"
+Documentation = "https://samuel-peprah-cmd.github.io/quicktools/"
+
+[project.scripts]
+quicktools = "quicktools.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
