@@ -83,6 +83,11 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 - `calculus` — derivatives, integrals, Taylor series, Newton's method
 - `numbertheory` — extended GCD, modular inverse, sieve, prime factorization
 - `combinatorics` — permutations, combinations, Catalan numbers, Fibonacci
+- `filetools` — read/write any file, JSON, YAML, hashing, zip/unzip
+- `imagetools` — convert PNG/JPEG/BMP/GIF/WEBP/TIFF, resize, rotate, watermark, images-to-PDF
+- `pdftools` — extract text, merge, split, rotate, encrypt, create PDFs, PDF-to-images
+- `doctools` — read/write/edit Word docs, docx-to-PDF, PDF-to-docx
+- `spreadsheettools` — CSV, Excel, and JSON conversions
 """
 
 __version__ = "0.2.0"

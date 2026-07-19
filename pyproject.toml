@@ -4,14 +4,23 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quicktools-atom"
-version = "0.3.0"
+version = "0.4.0"
 description = "Math and string utilities with a bundled CLI, by AtomDev Studios"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
     { name = "Samuel Peprah", email = "windscribe.samuel@gmail.com" }
 ]
-dependencies = []
+dependencies = [
+    "Pillow",
+    "python-docx",
+    "pypdf",
+    "openpyxl",
+    "reportlab",
+    "PyYAML",
+    "pdf2docx",
+    "docx2pdf",
+]
 
 [project.urls]
 Homepage = "https://github.com/Samuel-Peprah-cmd/quicktools"
