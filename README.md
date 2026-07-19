@@ -1,40 +1,186 @@
+"""
+
+<p align="center">
+
+&#x20; <img src="assets/AtomDev\_Studios.png" alt="AtomDev Studios" width="320" style="border-radius: 8px;">
+
+</p>
+
+
+
 \# quicktools
 
 
 
-A small toolkit with math and string utilities, plus a bundled CLI.
+A math and string-manipulation toolkit covering linear algebra, calculus,
+
+number theory, combinatorics, and text processing — built by \*\*Samuel Peprah\*\*
+
+under \*\*AtomDev Studios\*\*.
 
 
 
-\## Install
+\---
 
 
 
-&#x20;   pip install quicktools-atom
+\## About Samuel Peprah
 
 
 
-\## Usage
+<p align="center">
+
+&#x20; <img src="assets/sam.png" alt="Samuel Peprah" width="160" style="border-radius: 50%; object-fit: cover;">
+
+</p>
 
 
 
-&#x20;   from quicktools import mathtools, strtools
+Samuel Peprah is a software developer, web application developer, and
+
+Occupational Therapy student at the University of Ghana. Alongside his
+
+healthcare education, he is also studying Computer Science at the University
+
+of the People, combining knowledge from both fields to develop practical
+
+technology solutions.
 
 
 
-&#x20;   mathtools.is\_prime(97)
+His interests span full-stack web development, software engineering,
 
-&#x20;   strtools.slugify("Hello World")
+automation, artificial intelligence, cybersecurity, and health technology.
+
+He enjoys building scalable applications that solve real-world problems and
+
+continuously explores new technologies to improve his skills.
 
 
 
-\## CLI
+Samuel has developed educational platforms, business management systems,
+
+attendance systems, healthcare applications, and AI-powered solutions. He is
+
+passionate about creating software that is modern, efficient, secure, and
+
+user-friendly.
 
 
 
-&#x20;   quicktools is-prime 97
+\## About AtomDev Studios
 
-&#x20;   quicktools stats 1 2 3 4 5
 
-&#x20;   quicktools slugify "Hello World"
+
+AtomDev Studios is the personal software development brand founded by Samuel
+
+Peprah. The studio specializes in designing and developing modern websites,
+
+web applications, business management systems, educational platforms, and
+
+custom software solutions for individuals, startups, schools, and
+
+organizations.
+
+
+
+The mission of AtomDev Studios is to transform ideas into reliable, scalable,
+
+and innovative digital products that solve real-world problems while
+
+delivering exceptional user experiences.
+
+
+
+\### Areas of Expertise
+
+
+
+\- Full-Stack Web Development
+
+\- Custom Web Applications
+
+\- REST API Development
+
+\- Database Design \& Management
+
+\- Educational Technology Platforms
+
+\- Healthcare Technology Solutions
+
+\- AI Integration \& Automation
+
+\- UI/UX Design
+
+\- Cloud Deployment \& Hosting
+
+\- Website Maintenance \& Support
+
+
+
+\### Technologies
+
+
+
+Python • Flask • JavaScript • HTML • CSS • Tailwind CSS • Bootstrap •
+
+PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
+
+
+
+\### Connect
+
+
+
+\- LinkedIn: \[samuel-peprah-a63598347](https://www.linkedin.com/in/samuel-peprah-a63598347)
+
+\- X (Twitter): \[@legend\_consult](https://x.com/legend\_consult)
+
+\- TikTok: \[@legendinlearning](https://www.tiktok.com/@legendinlearning)
+
+\- Instagram: \[@ksapeprah](https://www.instagram.com/ksapeprah)
+
+\- GitHub: \[Samuel-Peprah-cmd](https://github.com/Samuel-Peprah-cmd)
+
+
+
+> "Building innovative software solutions that bridge technology with real-world impact."
+
+
+
+\---
+
+
+
+\## Modules
+
+
+
+\- `mathtools` — primes, GCD/LCM, mean, median, standard deviation
+
+\- `strtools` — palindromes, slugify, edit distance, anagrams, ciphers
+
+\- `linalg` — matrix operations, determinants, inverses, linear systems
+
+\- `calculus` — derivatives, integrals, Taylor series, Newton's method
+
+\- `numbertheory` — extended GCD, modular inverse, sieve, prime factorization
+
+\- `combinatorics` — permutations, combinations, Catalan numbers, Fibonacci
+
+\- `filetools` — read/write any file, JSON, YAML, hashing, zip/unzip
+
+\- `imagetools` — convert PNG/JPEG/BMP/GIF/WEBP/TIFF, resize, rotate, watermark, images-to-PDF
+
+\- `pdftools` — extract text, merge, split, rotate, encrypt, create PDFs, PDF-to-images
+
+\- `doctools` — read/write/edit Word docs, docx-to-PDF, PDF-to-docx
+
+\- `spreadsheettools` — CSV, Excel, and JSON conversions
+
+"""
+
+
+
+\_\_version\_\_ = "0.2.0"
 
