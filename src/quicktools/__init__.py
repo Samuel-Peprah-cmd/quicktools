@@ -1,5 +1,7 @@
 """
-![AtomDev Studios](assets/AtomDev_Studios.png)
+<p align="center">
+  <img src="assets/AtomDev_Studios.png" alt="AtomDev Studios" width="320" style="border-radius: 8px;">
+</p>
 
 # quicktools
 
@@ -11,7 +13,9 @@ under **AtomDev Studios**.
 
 ## About Samuel Peprah
 
-![Samuel Peprah](assets/sam.png)
+<p align="center">
+  <img src="assets/sam.png" alt="Samuel Peprah" width="160" style="border-radius: 50%; object-fit: cover;">
+</p>
 
 Samuel Peprah is a software developer, web application developer, and
 Occupational Therapy student at the University of Ghana. Alongside his
