@@ -88,6 +88,7 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 - `pdftools` — extract text, merge, split, rotate, encrypt, create PDFs, PDF-to-images
 - `doctools` — read/write/edit Word docs, docx-to-PDF, PDF-to-docx
 - `spreadsheettools` — CSV, Excel, and JSON conversions
+- `unitconverter` — temperature, distance, weight, volume, speed, and data storage conversions
 """
 
 __version__ = "0.2.0"
