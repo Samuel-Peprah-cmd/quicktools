@@ -5,7 +5,7 @@
 
 # quicktools
 
-A math, text, media, and document automation toolkit built by Samuel Peprah under AtomDev Studios— built by **Samuel Peprah**
+A math, text, media, and document automation toolkit— built by **Samuel Peprah**
 under **AtomDev Studios**.
 
 ---

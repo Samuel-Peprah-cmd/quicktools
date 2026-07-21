@@ -12,9 +12,7 @@
 
 
 
-A math and string-manipulation toolkit covering linear algebra, calculus,
-
-number theory, combinatorics, and text processing — built by \*\*Samuel Peprah\*\*
+A math, text, media, and document automation toolkit— built by \*\*Samuel Peprah\*\*
 
 under \*\*AtomDev Studios\*\*.
 
@@ -177,10 +175,14 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 \- `doctools` — read/write/edit Word docs, docx-to-PDF, PDF-to-docx
 
 \- `spreadsheettools` — CSV, Excel, and JSON conversions
+\- `unitconverter` — temperature, distance, weight, volume, speed, storage conversions
+\- `presentationtools` — read/create PowerPoint decks, cloud themes, docx/pdf-to-pptx
+\- `audiotools` — speech-to-text transcription, word timestamps, speaker diarization, SRT export
+\- `videotools` — video transcription, frame extraction, speaker diarization to Word scripts
 
 """
 
 
 
-\_\_version\_\_ = "0.2.0"
+\_\_version\_\_ = "0.7.0"
 
