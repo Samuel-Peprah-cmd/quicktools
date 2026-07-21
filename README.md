@@ -2,7 +2,7 @@
 
 <p align="center">
 
-&#x20; <img src="https://raw.githubusercontent.com/Samuel-Peprah-cmd/quicktools/main/assets/AtomDev/\_Studios.png" alt="AtomDev Studios" width="320" style="border-radius: 8px;">
+&#x20; <img src="https://samuel-peprah-cmd.github.io/quicktools/assets/AtomDev_Studios.png" alt="AtomDev Studios" width="320" style="border-radius: 8px;">
 
 </p>
 
@@ -28,7 +28,7 @@ under \*\*AtomDev Studios\*\*.
 
 <p align="center">
 
-&#x20; <img src="assets/sam.png" alt="Samuel Peprah" width="160" style="border-radius: 50%; object-fit: cover;">
+&#x20; <img src="https://samuel-peprah-cmd.github.io/quicktools/assets/sam.png" alt="Samuel Peprah" width="160" style="border-radius: 50%; object-fit: cover;">
 
 </p>
 
