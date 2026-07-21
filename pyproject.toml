@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quicktools-atom"
-version = "0.5.0"
-description = "Math and string utilities with a bundled CLI, by AtomDev Studios"
+version = "0.7.0"
+description = "Math, text, presentation, audio, video, and file utilities by AtomDev Studios"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
@@ -20,6 +20,10 @@ dependencies = [
     "PyYAML",
     "pdf2docx",
     "docx2pdf",
+    "python-pptx",
+    "faster-whisper",
+    "av",
+    "pyannote.audio",
 ]
 
 [project.urls]

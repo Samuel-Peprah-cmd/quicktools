@@ -5,8 +5,7 @@
 
 # quicktools
 
-A math and string-manipulation toolkit covering linear algebra, calculus,
-number theory, combinatorics, and text processing — built by **Samuel Peprah**
+A math, text, media, and document automation toolkit built by Samuel Peprah under AtomDev Studios— built by **Samuel Peprah**
 under **AtomDev Studios**.
 
 ---
@@ -75,8 +74,7 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 
 ---
 
-## Modules
-
+### Modules:
 - `mathtools` — primes, GCD/LCM, mean, median, standard deviation
 - `strtools` — palindromes, slugify, edit distance, anagrams, ciphers
 - `linalg` — matrix operations, determinants, inverses, linear systems
@@ -84,11 +82,14 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 - `numbertheory` — extended GCD, modular inverse, sieve, prime factorization
 - `combinatorics` — permutations, combinations, Catalan numbers, Fibonacci
 - `filetools` — read/write any file, JSON, YAML, hashing, zip/unzip
-- `imagetools` — convert PNG/JPEG/BMP/GIF/WEBP/TIFF, resize, rotate, watermark, images-to-PDF
+- `imagetools` — convert formats, resize, rotate, watermark, images-to-PDF
 - `pdftools` — extract text, merge, split, rotate, encrypt, create PDFs, PDF-to-images
 - `doctools` — read/write/edit Word docs, docx-to-PDF, PDF-to-docx
 - `spreadsheettools` — CSV, Excel, and JSON conversions
-- `unitconverter` — temperature, distance, weight, volume, speed, and data storage conversions
+- `unitconverter` — temperature, distance, weight, volume, speed, storage conversions
+- `presentationtools` — read/create PowerPoint decks, cloud themes, docx/pdf-to-pptx
+- `audiotools` — speech-to-text transcription, word timestamps, speaker diarization, SRT export
+- `videotools` — video transcription, frame extraction, speaker diarization to Word scripts
 """
 
-__version__ = "0.2.0"
+__version__ = "0.7.0"
