@@ -94,29 +94,15 @@ def transcribe_video_word_level(path: str, model_size: str = "base") -> list[dic
 
 # --- NEW DIARIZATION AND STYLING FEATURES ---
 
-def transcribe_video_with_speakers(path: str, hf_token: str, model_size: str = "base") -> list[dict]:
-    """
-    Extracts audio from video and transcribes it with Speaker IDs (Diarization).
-    Returns a list of dicts: [{"start": 0.0, "end": 5.0, "speaker": "Speaker 00", "text": "Hello"}]
-    Requires a Hugging Face token with access to pyannote/speaker-diarization-3.1.
-    """
-    from quicktools.audiotools import transcribe_with_speakers
-    
-    # Create a temporary mp3 file to hold the extracted audio
-    temp_audio = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
-    temp_audio.close()
+from quicktools import audiotools
 
-    try:
-        print("Extracting audio stream from video for diarization...")
-        extract_audio_from_video(path, temp_audio.name)
-        
-        print("Running ML Speaker Diarization and Transcription...")
-        transcript_data = transcribe_with_speakers(temp_audio.name, hf_token=hf_token, model_size=model_size)
-        return transcript_data
-    finally:
-        # Clean up the temporary audio file so we don't leak storage
-        if os.path.exists(temp_audio.name):
-            os.remove(temp_audio.name)
+def transcribe_video_with_speakers(path_or_url: str, hf_token: str, model_size: str = "base", device: str = "auto") -> list[dict]:
+    """
+    Extracts audio from a local video file or web URL (YouTube, TikTok, IG, X), 
+    transcribes it, and maps the text to specific speakers.
+    """
+    print(f"Processing video source: {path_or_url}")
+    return audiotools.transcribe_with_speakers(path_or_url, hf_token, model_size, device)
 
 
 def save_video_script_to_docx(transcript_data: list[dict], output_path: str, title_text: str = "Video Script & Transcript") -> None:

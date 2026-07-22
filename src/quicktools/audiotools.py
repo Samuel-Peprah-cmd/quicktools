@@ -7,6 +7,7 @@ The first call for a given model_size downloads that model (requires internet, o
 No separate ffmpeg installation is required — audio decoding is bundled in.
 """
 import os
+import tempfile
 import warnings
 import torch
 warnings.filterwarnings("ignore", message=".*torchcodec.*")
@@ -105,20 +106,31 @@ def _load_waveform_via_av(path: str, target_sr: int = 16000):
     return waveform, target_sr
 
 
-def _get_diarization_turns(diarization):
-    """Normalize pyannote's diarization output across library versions into a list of
-    (turn, speaker_label) pairs. Newer versions expose `.speaker_diarization` directly;
-    older versions require `.itertracks(yield_label=True)`."""
-    if hasattr(diarization, "speaker_diarization"):
-        return list(diarization.speaker_diarization)
-    return [(turn, speaker) for turn, _, speaker in diarization.itertracks(yield_label=True)]
+def download_url_audio(url: str) -> str:
+    """Download audio stream from YouTube, TikTok, Instagram, X, etc. via yt-dlp."""
+    try:
+        import yt_dlp
+    except ImportError:
+        raise ImportError(
+            "Downloading audio from URLs requires 'yt-dlp'. Install it with: pip install yt-dlp"
+        )
+
+    temp_dir = tempfile.gettempdir()
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'outtmpl': os.path.join(temp_dir, 'quicktools_%(id)s.%(ext)s'),
+        'quiet': True,
+        'no_warnings': True,
+    }
+    print(f"📥 Fetching audio stream from URL: {url}...")
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(url, download=True)
+        filename = ydl.prepare_filename(info)
+        return filename
 
 
 def _get_diarization_turns(output):
-    """
-    Helper to extract diarization turns, gracefully handling 
-    the API changes introduced in pyannote.audio 4.x.
-    """
+    """Extract diarization turns handling pyannote.audio 3.x and 4.x."""
     if hasattr(output, "speaker_diarization"):
         diarization = output.speaker_diarization
     else:
@@ -127,93 +139,132 @@ def _get_diarization_turns(output):
     turns = []
     for turn, _, speaker in diarization.itertracks(yield_label=True):
         turns.append((turn, speaker))
-    
     return turns
 
 
-def transcribe_with_speakers(path: str, hf_token: str, model_size: str = "base",
+def transcribe_with_speakers(path_or_url: str, hf_token: str, model_size: str = "base",
                              device: str = "auto") -> list[dict]:
-    """Transcribe audio and label each segment with which speaker said it (speaker diarization).
-    Returns a list of dicts: [{"start": 0.0, "end": 5.0, "speaker": "Speaker 00", "text": "Hello"}]
+    """Transcribe local audio/video or web URLs (YouTube, TikTok, IG, X) with word-level speaker diarization."""
+    temp_file = None
+    
+    # Auto-detect if input is a Web URL
+    if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
+        temp_file = download_url_audio(path_or_url)
+        audio_path = temp_file
+    else:
+        audio_path = path_or_url
 
-    device: "auto" (default), "cuda", or "cpu". "auto" will detect an NVIDIA GPU if available.
-    Diarization is dramatically faster on GPU (often 10-20x). On CPU, expect roughly 1-3x the audio's 
-    own length in processing time; a 10-minute recording may take 10-30 minutes.
-
-    Requires:
-    - pip install pyannote.audio
-    - A free Hugging Face account + access token (huggingface.co/settings/tokens)
-    - Accepting the model terms at huggingface.co/pyannote/speaker-diarization-3.1
-      AND huggingface.co/pyannote/speaker-diarization-community-1
-    """
-    if os.name == 'nt':
-        print("💡 Tip: For faster native audio processing, you can install FFmpeg.")
-        print("   Run this command in PowerShell: winget install ffmpeg\n")
-        
     try:
-        from pyannote.audio import Pipeline
-    except ImportError:
-        raise ImportError(
-            "Speaker diarization requires pyannote.audio. Install it with: pip install pyannote.audio"
-        )
-
-    # --- THE SPEED FIX: Auto-detect hardware ---
-    if device == "auto":
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-
-    # This warning fires purely because pyannote.audio's internal loader checks for
-    # torchcodec at import time — it's irrelevant here since quicktools decodes audio
-    # itself via PyAV and never touches pyannote's own loader. Safe to suppress.
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore", UserWarning)
-
-        print("[1/4] Decoding audio...")
-        waveform, sample_rate = _load_waveform_via_av(path)
-
-        print("[2/4] Loading diarization model (first run downloads it, ~1-2 min)...")
-        pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization-3.1", token=hf_token)
-        
-        # Apply the speed boost if GPU is available
-        if device == "cuda":
-            pipeline.to(torch.device("cuda"))
-            print("⚡ NVIDIA GPU detected and enabled! Processing will be exponentially faster.")
-        else:
-            print("🐢 No GPU detected (or forced CPU). Running on CPU (this takes a very long time for large files).")
-
-        print("[3/4] Running speaker diarization (the slow part — progress below)...")
+        if os.name == 'nt':
+            print("💡 Tip: For faster native audio processing, you can install FFmpeg.")
+            print("   Run this command in PowerShell: winget install ffmpeg\n")
+            
         try:
-            from pyannote.audio.pipelines.utils.hook import ProgressHook
-            with ProgressHook() as hook:
-                diarization = pipeline({"waveform": waveform, "sample_rate": sample_rate}, hook=hook)
+            from pyannote.audio import Pipeline
         except ImportError:
-            diarization = pipeline({"waveform": waveform, "sample_rate": sample_rate})
+            raise ImportError(
+                "Speaker diarization requires pyannote.audio. Install with: pip install pyannote.audio"
+            )
 
-    print("[4/4] Transcribing speech to text...")
-    # NOTE: Assuming _load_model() handles your internal Whisper loading
-    model = _load_model(model_size)
-    segments, _ = model.transcribe(path)
+        if device == "auto":
+            device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    print("Aligning speakers to transcript...")
-    # Use the helper to bypass the 4.x Pyannote crash
-    turns = _get_diarization_turns(diarization)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
 
-    transcript_data = []
-    for segment in segments:
-        midpoint = (segment.start + segment.end) / 2
-        current_speaker = "Unknown"
-        for turn, speaker in turns:
-            if turn.start <= midpoint <= turn.end:
-                current_speaker = speaker
-                break
-        transcript_data.append({
-            "start": segment.start,
-            "end": segment.end,
-            "speaker": current_speaker.replace("SPEAKER_", "Speaker "),
-            "text": segment.text.strip(),
-        })
-        
-    print("Done!")
-    return transcript_data
+            print("[1/4] Decoding audio stream...")
+            waveform, sample_rate = _load_waveform_via_av(audio_path)
+
+            print("[2/4] Loading diarization model...")
+            pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization-3.1", token=hf_token)
+            
+            if device == "cuda":
+                pipeline.to(torch.device("cuda"))
+                print("⚡ NVIDIA GPU enabled.")
+            else:
+                print("🐢 Running diarization on CPU.")
+
+            print("[3/4] Running speaker diarization...")
+            try:
+                from pyannote.audio.pipelines.utils.hook import ProgressHook
+                with ProgressHook() as hook:
+                    diarization = pipeline({"waveform": waveform, "sample_rate": sample_rate}, hook=hook)
+            except ImportError:
+                diarization = pipeline({"waveform": waveform, "sample_rate": sample_rate})
+
+        print("[4/4] Transcribing speech with word-level timestamps...")
+        model = _load_model(model_size)
+        segments, _ = model.transcribe(audio_path, word_timestamps=True)
+
+        # Extract individual words with exact timestamps
+        all_words = []
+        for segment in segments:
+            if hasattr(segment, 'words') and segment.words:
+                for word in segment.words:
+                    all_words.append(word)
+            else:
+                all_words.append(segment)
+
+        turns = _get_diarization_turns(diarization)
+
+        # Map each word to Pyannote speaker turns
+        word_speaker_map = []
+        for w in all_words:
+            w_mid = (w.start + w.end) / 2
+            speaker = "Unknown"
+            for turn, spk in turns:
+                if turn.start <= w_mid <= turn.end:
+                    speaker = spk
+                    break
+            text_content = getattr(w, 'word', getattr(w, 'text', ''))
+            word_speaker_map.append({
+                "start": w.start,
+                "end": w.end,
+                "speaker": speaker.replace("SPEAKER_", "Speaker "),
+                "word": text_content
+            })
+
+        # Re-group consecutive words belonging to the same speaker
+        transcript_data = []
+        if word_speaker_map:
+            curr_speaker = word_speaker_map[0]["speaker"]
+            curr_start = word_speaker_map[0]["start"]
+            curr_end = word_speaker_map[0]["end"]
+            curr_words = [word_speaker_map[0]["word"]]
+
+            for w in word_speaker_map[1:]:
+                if w["speaker"] == curr_speaker:
+                    curr_words.append(w["word"])
+                    curr_end = w["end"]
+                else:
+                    transcript_data.append({
+                        "start": round(curr_start, 2),
+                        "end": round(curr_end, 2),
+                        "speaker": curr_speaker,
+                        "text": "".join(curr_words).strip()
+                    })
+                    curr_speaker = w["speaker"]
+                    curr_start = w["start"]
+                    curr_end = w["end"]
+                    curr_words = [w["word"]]
+
+            transcript_data.append({
+                "start": round(curr_start, 2),
+                "end": round(curr_end, 2),
+                "speaker": curr_speaker,
+                "text": "".join(curr_words).strip()
+            })
+
+        print("Done!")
+        return transcript_data
+
+    finally:
+        # Clean up temporary downloaded file
+        if temp_file and os.path.exists(temp_file):
+            try:
+                os.remove(temp_file)
+            except Exception:
+                pass
 
 def save_transcript_to_docx(transcript_data: list[dict], output_path: str) -> None:
     """
