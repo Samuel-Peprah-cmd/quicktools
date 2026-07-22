@@ -139,3 +139,46 @@ def save_video_script_to_docx(transcript_data: list[dict], output_path: str, tit
         p.paragraph_format.space_after = Pt(8)
 
     doc.save(output_path)
+
+def download_video(url: str, output_dir: str = ".", filename: str | None = None, resolution: str = "best") -> str:
+    """
+    Downloads a video file from supported web URLs (YouTube, TikTok, Instagram, X/Twitter, etc.).
+    
+    :param url: The web video URL to download.
+    :param output_dir: Destination folder (defaults to current directory).
+    :param filename: Optional custom filename (without extension). Defaults to video title.
+    :param resolution: Quality target ('best' or 'worst').
+    :return: Absolute file path of the downloaded video.
+    """
+    try:
+        import yt_dlp
+    except ImportError:
+        raise ImportError(
+            "Downloading videos requires 'yt-dlp'. Install it with: pip install yt-dlp"
+        )
+
+    os.makedirs(output_dir, exist_ok=True)
+
+    out_template = f"{filename}.%(ext)s" if filename else "%(title)s.%(ext)s"
+    target_path = os.path.join(output_dir, out_template)
+
+    ydl_opts = {
+        'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' if resolution == 'best' else 'worst',
+        'outtmpl': target_path,
+        'quiet': False,
+        'no_warnings': True,
+        'merge_output_format': 'mp4',
+    }
+
+    print(f"📥 Downloading video from {url}...")
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(url, download=True)
+        filepath = ydl.prepare_filename(info)
+
+        # Check if output was merged into mp4 container
+        base, _ = os.path.splitext(filepath)
+        if os.path.exists(f"{base}.mp4"):
+            filepath = f"{base}.mp4"
+
+        print(f"✅ Video saved to: {filepath}")
+        return os.path.abspath(filepath)
