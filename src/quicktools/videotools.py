@@ -8,6 +8,7 @@ Supports common video containers: MP4, MOV, MKV, AVI, WEBM, and more — since P
 uses FFmpeg's decoding engine internally, the same one that powers audiotools.
 """
 import os
+import shutil
 import tempfile
 
 
@@ -158,16 +159,31 @@ def download_video(url: str, output_dir: str = ".", filename: str | None = None,
         )
 
     os.makedirs(output_dir, exist_ok=True)
-
     out_template = f"{filename}.%(ext)s" if filename else "%(title)s.%(ext)s"
     target_path = os.path.join(output_dir, out_template)
 
+    # --- THE SMART FFMPEG FALLBACK ---
+    has_ffmpeg = shutil.which("ffmpeg") is not None
+    
+    if resolution == "best":
+        if has_ffmpeg:
+            # Grab max quality separate streams and merge them
+            fmt = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+        else:
+            # Fall back to the best PRE-MERGED format (usually 720p max) to prevent a crash
+            print("⚠️ [quicktools] FFmpeg not found. Falling back to pre-merged 720p format.")
+            print("💡 Tip: Install FFmpeg ('winget install ffmpeg') to enable 1080p+ downloads.")
+            fmt = 'best[ext=mp4]/best'
+    else:
+        fmt = 'worst'
+    # ---------------------------------
+
     ydl_opts = {
-        'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' if resolution == 'best' else 'worst',
+        'format': fmt,
         'outtmpl': target_path,
         'quiet': False,
         'no_warnings': True,
-        'merge_output_format': 'mp4',
+        'merge_output_format': 'mp4' if has_ffmpeg else None,
     }
 
     print(f"📥 Downloading video from {url}...")
@@ -175,7 +191,7 @@ def download_video(url: str, output_dir: str = ".", filename: str | None = None,
         info = ydl.extract_info(url, download=True)
         filepath = ydl.prepare_filename(info)
 
-        # Check if output was merged into mp4 container
+        # Check if output was merged into an mp4 container
         base, _ = os.path.splitext(filepath)
         if os.path.exists(f"{base}.mp4"):
             filepath = f"{base}.mp4"
