@@ -1,6 +1,6 @@
 """
 <p align="center">
-  <img src="https://samuel-peprah-cmd.github.io/quicktools/assets/AtomDev_Studios.png" alt="AtomDev Studios" width="320" style="border-radius: 8px;">
+  ![AtomDev Studios](https://samuel-peprah-cmd.github.io/quicktools/assets/AtomDev_Studios.png)
 </p>
 
 # quicktools
@@ -13,7 +13,7 @@ under **AtomDev Studios**.
 ## About Samuel Peprah
 
 <p align="center">
-  <img src="https://samuel-peprah-cmd.github.io/quicktools/assets/sam.png" alt="Samuel Peprah" width="160" style="border-radius: 50%; object-fit: cover;">
+  ![Samuel Peprah](https://samuel-peprah-cmd.github.io/quicktools/assets/sam.png)
 </p>
 
 Samuel Peprah is a software developer, web application developer, and
@@ -92,4 +92,4 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 - `videotools` — video transcription, frame extraction, speaker diarization to Word scripts
 """
 
-__version__ = "0.7.0"
+__version__ = "0.7.4"

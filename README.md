@@ -2,8 +2,7 @@
 
 <p align="center">
 
-&#x20; <img src="https://samuel-peprah-cmd.github.io/quicktools/assets/AtomDev_Studios.png" alt="AtomDev Studios" width="320" style="border-radius: 8px;">
-
+&#x20; ![AtomDev Studios](https://samuel-peprah-cmd.github.io/quicktools/assets/AtomDev_Studios.png)
 </p>
 
 
@@ -28,8 +27,7 @@ under \*\*AtomDev Studios\*\*.
 
 <p align="center">
 
-&#x20; <img src="https://samuel-peprah-cmd.github.io/quicktools/assets/sam.png" alt="Samuel Peprah" width="160" style="border-radius: 50%; object-fit: cover;">
-
+&#x20; ![Samuel Peprah](https://samuel-peprah-cmd.github.io/quicktools/assets/sam.png)
 </p>
 
 
@@ -184,5 +182,5 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 
 
 
-\_\_version\_\_ = "0.7.0"
+\_\_version\_\_ = "0.7.4"
 
