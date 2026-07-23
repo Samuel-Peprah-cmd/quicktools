@@ -92,4 +92,4 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 - `videotools` — video transcription, frame extraction, speaker diarization to Word scripts
 """
 
-__version__ = "0.8.2"
+__version__ = "0.8.3"

@@ -141,7 +141,8 @@ def save_video_script_to_docx(transcript_data: list[dict], output_path: str, tit
 
     doc.save(output_path)
 
-def download_video(url: str, output_dir: str = ".", filename: str | None = None, resolution: str = "best") -> str:
+
+def download_video(url: str, output_dir: str = ".", filename: str | None = None, resolution: str = "best", cookiefile: str | None = None) -> str:
     """
     Downloads a video file from supported web URLs (YouTube, TikTok, Instagram, X/Twitter, etc.).
     
@@ -149,6 +150,7 @@ def download_video(url: str, output_dir: str = ".", filename: str | None = None,
     :param output_dir: Destination folder (defaults to current directory).
     :param filename: Optional custom filename (without extension). Defaults to video title.
     :param resolution: Quality target ('best' or 'worst').
+    :param cookiefile: Path to a cookies.txt file to bypass login restrictions.
     :return: Absolute file path of the downloaded video.
     """
     try:
@@ -161,6 +163,11 @@ def download_video(url: str, output_dir: str = ".", filename: str | None = None,
     os.makedirs(output_dir, exist_ok=True)
     out_template = f"{filename}.%(ext)s" if filename else "%(title)s.%(ext)s"
     target_path = os.path.join(output_dir, out_template)
+
+    # --- AUTO-DETECT SERVER COOKIES ---
+    if not cookiefile and os.path.exists('/app/cookies.txt'):
+        cookiefile = '/app/cookies.txt'
+    # ----------------------------------
 
     # --- THE SMART FFMPEG FALLBACK ---
     has_ffmpeg = shutil.which("ffmpeg") is not None
@@ -185,6 +192,12 @@ def download_video(url: str, output_dir: str = ".", filename: str | None = None,
         'no_warnings': True,
         'merge_output_format': 'mp4' if has_ffmpeg else None,
     }
+
+    # --- ATTACH COOKIE IF AVAILABLE ---
+    if cookiefile and os.path.exists(cookiefile):
+        print(f"🔑 Using cookie authentication file: {cookiefile}")
+        ydl_opts['cookiefile'] = cookiefile
+    # ----------------------------------
 
     print(f"📥 Downloading video from {url}...")
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:

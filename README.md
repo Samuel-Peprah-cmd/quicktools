@@ -182,5 +182,5 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 
 
 
-\_\_version\_\_ = "0.8.2"
+\_\_version\_\_ = "0.8.3"
 
