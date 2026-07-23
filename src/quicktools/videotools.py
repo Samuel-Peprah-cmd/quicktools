@@ -191,6 +191,8 @@ def download_video(url: str, output_dir: str = ".", filename: str | None = None,
         'quiet': False,
         'no_warnings': True,
         'merge_output_format': 'mp4' if has_ffmpeg else None,
+        # Tells YouTube the request is coming from a mobile app, bypassing web bot-checkers
+        'extractor_args': {'youtube': ['player_client=android']}, 
     }
 
     # --- ATTACH COOKIE IF AVAILABLE ---

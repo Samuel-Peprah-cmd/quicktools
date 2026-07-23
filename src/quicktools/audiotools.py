@@ -13,23 +13,43 @@ import torch
 warnings.filterwarnings("ignore", message=".*torchcodec.*")
 warnings.filterwarnings("ignore", category=UserWarning, module="pyannote.*")
 
-def _load_model(model_size: str = "base"):
+def _load_model(model_size: str = "base", device: str = "cpu"):
+    """
+    Initializes the faster-whisper model and automatically assigns compute type
+    based on the available device (GPU vs CPU).
+    """
     try:
         from faster_whisper import WhisperModel
     except ImportError:
         raise ImportError(
             "Audio transcription requires faster-whisper. Install it with: pip install faster-whisper"
         )
-    return WhisperModel(model_size, device="cpu", compute_type="int8")
+    
+    # Map 'auto' or 'cuda' for GPU hardware acceleration
+    compute_type = "float16" if device == "cuda" else "int8"
+    
+    return WhisperModel(model_size, device=device, compute_type=compute_type)
 
 
-def transcribe_audio(path: str, model_size: str = "base", language: str | None = None) -> str:
-    """Transcribe an audio file to plain text. model_size options (accuracy vs speed):
-    'tiny', 'base', 'small', 'medium', 'large-v3'. language is an optional ISO code
-    (e.g. 'en') to skip auto-detection and speed things up."""
-    model = _load_model(model_size)
-    segments, _ = model.transcribe(path, language=language)
-    return " ".join(segment.text.strip() for segment in segments)
+def transcribe_audio(path_or_url: str, model_size: str = "base", language: str | None = None) -> str:
+    """Transcribe local audio/video or web URLs to plain text."""
+    temp_file = None
+    if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
+        temp_file = download_url_audio(path_or_url)
+        audio_path = temp_file
+    else:
+        audio_path = path_or_url
+
+    try:
+        model = _load_model(model_size)
+        segments, _ = model.transcribe(audio_path, language=language)
+        return " ".join(segment.text.strip() for segment in segments)
+    finally:
+        if temp_file and os.path.exists(temp_file):
+            try:
+                os.remove(temp_file)
+            except Exception:
+                pass
 
 
 def transcribe_audio_with_timestamps(path: str, model_size: str = "base") -> list[dict]:
@@ -140,6 +160,51 @@ def _get_diarization_turns(output):
     for turn, _, speaker in diarization.itertracks(yield_label=True):
         turns.append((turn, speaker))
     return turns
+
+def chunk_audio_file(input_path: str, chunk_duration_ms: int = 600000) -> list[str]:
+    """
+    Splits a massive audio file into smaller segments (default 10 minutes / 600,000ms) 
+    to prevent memory exhaustion on server nodes.
+    
+    Returns a list of temporary file paths for the chunks.
+    """
+    try:
+        import av
+    except ImportError:
+        raise ImportError("Chunking requires PyAV. Install it with: pip install av")
+    
+    container = av.open(input_path)
+    audio_stream = container.streams.audio[0]
+    
+    temp_dir = tempfile.mkdtemp()
+    chunk_paths = []
+    
+    chunk_idx = 0
+    output_path = os.path.join(temp_dir, f"chunk_{chunk_idx}.wav")
+    
+    output_container = av.open(output_path, mode="w", format="wav")
+    output_stream = output_container.add_stream("pcm_s16le", rate=16000, layout="mono")
+    
+    start_time = 0.0
+    for frame in container.decode(audio_stream):
+        if frame.time - start_time > (chunk_duration_ms / 1000.0):
+            output_container.close()
+            chunk_paths.append(output_path)
+            
+            chunk_idx += 1
+            output_path = os.path.join(temp_dir, f"chunk_{chunk_idx}.wav")
+            output_container = av.open(output_path, mode="w", format="wav")
+            output_stream = output_container.add_stream("pcm_s16le", rate=16000, layout="mono")
+            start_time = frame.time
+            
+        for packet in output_stream.encode(frame):
+            output_container.mux(packet)
+            
+    output_container.close()
+    container.close()
+    chunk_paths.append(output_path)
+    
+    return chunk_paths
 
 
 def transcribe_with_speakers(path_or_url: str, hf_token: str, model_size: str = "base",
