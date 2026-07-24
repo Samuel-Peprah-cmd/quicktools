@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "quicktools-atom"
-version = "0.8.7"
+version = "0.8.8"
 description = "Math, text, presentation, audio, video, and file utilities by AtomDev Studios"
 readme = "README.md"
 requires-python = ">=3.9"

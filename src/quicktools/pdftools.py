@@ -179,3 +179,14 @@ def split_pdf(input_path: str, output_path: str, start_page: int, end_page: int)
         
     with open(output_path, "wb") as f:
         writer.write(f)
+
+def compress_pdf(input_path: str, output_path: str) -> None:
+    """Compresses a PDF file by deflating streams and collecting garbage."""
+    try:
+        import fitz  # PyMuPDF
+    except ImportError:
+        raise ImportError("PDF compression requires PyMuPDF. Run: pip install pymupdf")
+    
+    doc = fitz.open(input_path)
+    # garbage=4 executes maximum cleanup of unused objects, deflate compresses streams
+    doc.save(output_path, garbage=4, deflate=True)

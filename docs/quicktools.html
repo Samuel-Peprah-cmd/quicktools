@@ -149,26 +149,6 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker</p>
 </blockquote>
 
 <hr />
-
-<h3 id="modules">Modules:</h3>
-
-<ul>
-<li><code>mathtools</code> — primes, GCD/LCM, mean, median, standard deviation</li>
-<li><code>strtools</code> — palindromes, slugify, edit distance, anagrams, ciphers</li>
-<li><code>linalg</code> — matrix operations, determinants, inverses, linear systems</li>
-<li><code>calculus</code> — derivatives, integrals, Taylor series, Newton's method</li>
-<li><code>numbertheory</code> — extended GCD, modular inverse, sieve, prime factorization</li>
-<li><code>combinatorics</code> — permutations, combinations, Catalan numbers, Fibonacci</li>
-<li><code>filetools</code> — read/write any file, JSON, YAML, hashing, zip/unzip</li>
-<li><code>imagetools</code> — convert formats, resize, rotate, watermark, images-to-PDF</li>
-<li><code>pdftools</code> — extract text, merge, split, rotate, encrypt, create PDFs, PDF-to-images</li>
-<li><code>doctools</code> — read/write/edit Word docs, docx-to-PDF, PDF-to-docx</li>
-<li><code>spreadsheettools</code> — CSV, Excel, and JSON conversions</li>
-<li><code>unitconverter</code> — temperature, distance, weight, volume, speed, storage conversions</li>
-<li><code>presentationtools</code> — read/create PowerPoint decks, cloud themes, docx/pdf-to-pptx</li>
-<li><code>audiotools</code> — speech-to-text transcription, word timestamps, speaker diarization, SRT export</li>
-<li><code>videotools</code> — video transcription, frame extraction, speaker diarization to Word scripts</li>
-</ul>
 </div>
 
                         <input id="mod-quicktools-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
@@ -249,25 +229,27 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker</p>
 </span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a>
 </span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a><span class="sd">---</span>
 </span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a>
-</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a><span class="sd">### Modules:</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a><span class="sd">- `mathtools` — primes, GCD/LCM, mean, median, standard deviation</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a><span class="sd">- `strtools` — palindromes, slugify, edit distance, anagrams, ciphers</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a><span class="sd">- `linalg` — matrix operations, determinants, inverses, linear systems</span>
-</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a><span class="sd">- `calculus` — derivatives, integrals, Taylor series, Newton&#39;s method</span>
-</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a><span class="sd">- `numbertheory` — extended GCD, modular inverse, sieve, prime factorization</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a><span class="sd">- `combinatorics` — permutations, combinations, Catalan numbers, Fibonacci</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a><span class="sd">- `filetools` — read/write any file, JSON, YAML, hashing, zip/unzip</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos">83</span></a><span class="sd">- `imagetools` — convert formats, resize, rotate, watermark, images-to-PDF</span>
-</span><span id="L-84"><a href="#L-84"><span class="linenos">84</span></a><span class="sd">- `pdftools` — extract text, merge, split, rotate, encrypt, create PDFs, PDF-to-images</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos">85</span></a><span class="sd">- `doctools` — read/write/edit Word docs, docx-to-PDF, PDF-to-docx</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos">86</span></a><span class="sd">- `spreadsheettools` — CSV, Excel, and JSON conversions</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos">87</span></a><span class="sd">- `unitconverter` — temperature, distance, weight, volume, speed, storage conversions</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos">88</span></a><span class="sd">- `presentationtools` — read/create PowerPoint decks, cloud themes, docx/pdf-to-pptx</span>
-</span><span id="L-89"><a href="#L-89"><span class="linenos">89</span></a><span class="sd">- `audiotools` — speech-to-text transcription, word timestamps, speaker diarization, SRT export</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos">90</span></a><span class="sd">- `videotools` — video transcription, frame extraction, speaker diarization to Word scripts</span>
-</span><span id="L-91"><a href="#L-91"><span class="linenos">91</span></a><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos">92</span></a>
-</span><span id="L-93"><a href="#L-93"><span class="linenos">93</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.8.7&quot;</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a><span class="sd">### Modules:</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a><span class="sd">- `mathtools` - primes, GCD/LCM, mean, median, standard deviation</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a><span class="sd">- `strtools` - palindromes, slugify, edit distance, anagrams, ciphers</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a><span class="sd">- `linalg` - matrix operations, determinants, inverses, linear systems</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a><span class="sd">- `calculus` - derivatives, integrals, Taylor series, Newton&#39;s method</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a><span class="sd">- `numbertheory` - extended GCD, modular inverse, sieve, prime factorization</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos">83</span></a><span class="sd">- `combinatorics` - permutations, combinations, Catalan numbers, Fibonacci</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos">84</span></a><span class="sd">- `filetools` - read/write any file, JSON, YAML, hashing, zip/unzip</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos">85</span></a><span class="sd">- `imagetools` - AI background removal, format conversions, compress images, resize, watermark, image-to-PDF</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos">86</span></a><span class="sd">- `pdftools` - merge, split/extract pages, compress PDFs, text extraction, rotate, encrypt, PDF-to-images</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos">87</span></a><span class="sd">- `doctools` - read/write Word docs, compress heavy .docx files, docx-to-PDF, PDF-to-docx</span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos">88</span></a><span class="sd">- `spreadsheettools` - CSV, Excel, and JSON conversions</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos">89</span></a><span class="sd">- `unitconverter` - temperature, distance, weight, volume, speed, storage conversions</span>
+</span><span id="L-90"><a href="#L-90"><span class="linenos">90</span></a><span class="sd">- `presentationtools` - read/create PowerPoint decks, cloud themes, docx/pdf-to-pptx, pptx-to-docx</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos">91</span></a><span class="sd">- `audiotools` - AI transcription, AI translation to English, word timestamps, speaker diarization, SRT export</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos">92</span></a><span class="sd">- `videotools` - web video downloader, audio extraction, video transcription, frame extraction</span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos">93</span></a><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos">94</span></a>
+</span><span id="L-95"><a href="#L-95"><span class="linenos">95</span></a><span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.8.8&quot;</span>
 </span></pre></div>
 
 

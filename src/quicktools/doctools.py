@@ -87,3 +87,11 @@ def pdf_to_docx(path: str, output_path: str) -> None:
     cv = Converter(path)
     cv.convert(output_path)
     cv.close()
+
+def compress_docx(input_path: str, output_path: str) -> None:
+    """Compresses a Word document by applying maximum ZIP deflation to its internal structure."""
+    import zipfile
+    with zipfile.ZipFile(input_path, 'r') as zin:
+        with zipfile.ZipFile(output_path, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zout:
+            for item in zin.infolist():
+                zout.writestr(item, zin.read(item.filename))

@@ -138,3 +138,12 @@ def remove_background(input_path: str, output_path: str) -> None:
     input_image = Image.open(input_path)
     output_image = remove(input_image)
     output_image.save(output_path, "PNG")
+
+def compress_image(input_path: str, output_path: str, quality: int = 65) -> None:
+    """Compresses an image to drastically reduce file size while maintaining acceptable quality."""
+    from PIL import Image
+    img = Image.open(input_path)
+    # Convert RGBA (PNGs with transparency) to RGB so they can be saved as JPEGs
+    if img.mode in ("RGBA", "P"):
+        img = img.convert("RGB")
+    img.save(output_path, "JPEG", optimize=True, quality=quality)

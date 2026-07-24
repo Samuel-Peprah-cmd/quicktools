@@ -72,22 +72,24 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 
 ---
 
+"""
+"""
 ### Modules:
-- `mathtools` — primes, GCD/LCM, mean, median, standard deviation
-- `strtools` — palindromes, slugify, edit distance, anagrams, ciphers
-- `linalg` — matrix operations, determinants, inverses, linear systems
-- `calculus` — derivatives, integrals, Taylor series, Newton's method
-- `numbertheory` — extended GCD, modular inverse, sieve, prime factorization
-- `combinatorics` — permutations, combinations, Catalan numbers, Fibonacci
-- `filetools` — read/write any file, JSON, YAML, hashing, zip/unzip
-- `imagetools` — convert formats, resize, rotate, watermark, images-to-PDF
-- `pdftools` — extract text, merge, split, rotate, encrypt, create PDFs, PDF-to-images
-- `doctools` — read/write/edit Word docs, docx-to-PDF, PDF-to-docx
-- `spreadsheettools` — CSV, Excel, and JSON conversions
-- `unitconverter` — temperature, distance, weight, volume, speed, storage conversions
-- `presentationtools` — read/create PowerPoint decks, cloud themes, docx/pdf-to-pptx
-- `audiotools` — speech-to-text transcription, word timestamps, speaker diarization, SRT export
-- `videotools` — video transcription, frame extraction, speaker diarization to Word scripts
+- `mathtools` - primes, GCD/LCM, mean, median, standard deviation
+- `strtools` - palindromes, slugify, edit distance, anagrams, ciphers
+- `linalg` - matrix operations, determinants, inverses, linear systems
+- `calculus` - derivatives, integrals, Taylor series, Newton's method
+- `numbertheory` - extended GCD, modular inverse, sieve, prime factorization
+- `combinatorics` - permutations, combinations, Catalan numbers, Fibonacci
+- `filetools` - read/write any file, JSON, YAML, hashing, zip/unzip
+- `imagetools` - AI background removal, format conversions, compress images, resize, watermark, image-to-PDF
+- `pdftools` - merge, split/extract pages, compress PDFs, text extraction, rotate, encrypt, PDF-to-images
+- `doctools` - read/write Word docs, compress heavy .docx files, docx-to-PDF, PDF-to-docx
+- `spreadsheettools` - CSV, Excel, and JSON conversions
+- `unitconverter` - temperature, distance, weight, volume, speed, storage conversions
+- `presentationtools` - read/create PowerPoint decks, cloud themes, docx/pdf-to-pptx, pptx-to-docx
+- `audiotools` - AI transcription, AI translation to English, word timestamps, speaker diarization, SRT export
+- `videotools` - web video downloader, audio extraction, video transcription, frame extraction
 """
 
-__version__ = "0.8.7"
+__version__ = "0.8.8"
