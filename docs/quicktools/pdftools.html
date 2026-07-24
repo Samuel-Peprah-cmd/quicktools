@@ -68,6 +68,9 @@
             <li>
                     <a class="function" href="#pdf_to_images">pdf_to_images</a>
             </li>
+            <li>
+                    <a class="function" href="#split_pdf">split_pdf</a>
+            </li>
     </ul>
 
 
@@ -252,6 +255,26 @@
 </span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>        <span class="n">pix</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span>
 </span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>        <span class="n">output_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_path</span><span class="p">)</span>
 </span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>    <span class="k">return</span> <span class="n">output_paths</span>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a><span class="k">def</span><span class="w"> </span><span class="nf">split_pdf</span><span class="p">(</span><span class="n">input_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_page</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end_page</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Extracts a specific range of pages from a PDF and saves them as a new PDF.&quot;&quot;&quot;</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>        <span class="kn">from</span><span class="w"> </span><span class="nn">pypdf</span><span class="w"> </span><span class="kn">import</span> <span class="n">PdfReader</span><span class="p">,</span> <span class="n">PdfWriter</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;PDF manipulation requires pypdf. Run: pip install pypdf&quot;</span><span class="p">)</span>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>    
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>    <span class="n">reader</span> <span class="o">=</span> <span class="n">PdfReader</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>    <span class="n">writer</span> <span class="o">=</span> <span class="n">PdfWriter</span><span class="p">()</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a>    
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>    <span class="n">total_pages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a>    <span class="n">start_idx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a>    <span class="n">end_idx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">total_pages</span><span class="p">,</span> <span class="n">end_page</span><span class="p">)</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a>    
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">):</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="n">writer</span><span class="o">.</span><span class="n">add_page</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">pages</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>        
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -616,6 +639,44 @@
 
             <div class="docstring"><p>Render every page of a PDF as a PNG image. Requires the optional 'PyMuPDF' package
 (pip install pymupdf) — raises ImportError with instructions if it's not installed.</p>
+</div>
+
+
+                </section>
+                <section id="split_pdf">
+                            <input id="split_pdf-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">split_pdf</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">input_path</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">start_page</span><span class="p">:</span> <span class="nb">int</span>,</span><span class="param">	<span class="n">end_page</span><span class="p">:</span> <span class="nb">int</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+
+                <label class="view-source-button" for="split_pdf-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#split_pdf"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="split_pdf-164"><a href="#split_pdf-164"><span class="linenos">164</span></a><span class="k">def</span><span class="w"> </span><span class="nf">split_pdf</span><span class="p">(</span><span class="n">input_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start_page</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end_page</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="split_pdf-165"><a href="#split_pdf-165"><span class="linenos">165</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Extracts a specific range of pages from a PDF and saves them as a new PDF.&quot;&quot;&quot;</span>
+</span><span id="split_pdf-166"><a href="#split_pdf-166"><span class="linenos">166</span></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="split_pdf-167"><a href="#split_pdf-167"><span class="linenos">167</span></a>        <span class="kn">from</span><span class="w"> </span><span class="nn">pypdf</span><span class="w"> </span><span class="kn">import</span> <span class="n">PdfReader</span><span class="p">,</span> <span class="n">PdfWriter</span>
+</span><span id="split_pdf-168"><a href="#split_pdf-168"><span class="linenos">168</span></a>    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+</span><span id="split_pdf-169"><a href="#split_pdf-169"><span class="linenos">169</span></a>        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s2">&quot;PDF manipulation requires pypdf. Run: pip install pypdf&quot;</span><span class="p">)</span>
+</span><span id="split_pdf-170"><a href="#split_pdf-170"><span class="linenos">170</span></a>    
+</span><span id="split_pdf-171"><a href="#split_pdf-171"><span class="linenos">171</span></a>    <span class="n">reader</span> <span class="o">=</span> <span class="n">PdfReader</span><span class="p">(</span><span class="n">input_path</span><span class="p">)</span>
+</span><span id="split_pdf-172"><a href="#split_pdf-172"><span class="linenos">172</span></a>    <span class="n">writer</span> <span class="o">=</span> <span class="n">PdfWriter</span><span class="p">()</span>
+</span><span id="split_pdf-173"><a href="#split_pdf-173"><span class="linenos">173</span></a>    
+</span><span id="split_pdf-174"><a href="#split_pdf-174"><span class="linenos">174</span></a>    <span class="n">total_pages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>
+</span><span id="split_pdf-175"><a href="#split_pdf-175"><span class="linenos">175</span></a>    <span class="n">start_idx</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">start_page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</span><span id="split_pdf-176"><a href="#split_pdf-176"><span class="linenos">176</span></a>    <span class="n">end_idx</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">total_pages</span><span class="p">,</span> <span class="n">end_page</span><span class="p">)</span>
+</span><span id="split_pdf-177"><a href="#split_pdf-177"><span class="linenos">177</span></a>    
+</span><span id="split_pdf-178"><a href="#split_pdf-178"><span class="linenos">178</span></a>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start_idx</span><span class="p">,</span> <span class="n">end_idx</span><span class="p">):</span>
+</span><span id="split_pdf-179"><a href="#split_pdf-179"><span class="linenos">179</span></a>        <span class="n">writer</span><span class="o">.</span><span class="n">add_page</span><span class="p">(</span><span class="n">reader</span><span class="o">.</span><span class="n">pages</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</span><span id="split_pdf-180"><a href="#split_pdf-180"><span class="linenos">180</span></a>        
+</span><span id="split_pdf-181"><a href="#split_pdf-181"><span class="linenos">181</span></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="split_pdf-182"><a href="#split_pdf-182"><span class="linenos">182</span></a>        <span class="n">writer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Extracts a specific range of pages from a PDF and saves them as a new PDF.</p>
 </div>
 
 

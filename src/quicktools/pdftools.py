@@ -159,3 +159,23 @@ def pdf_to_images(path: str, output_dir: str, dpi: int = 150) -> list[str]:
         pix.save(out_path)
         output_paths.append(out_path)
     return output_paths
+
+def split_pdf(input_path: str, output_path: str, start_page: int, end_page: int) -> None:
+    """Extracts a specific range of pages from a PDF and saves them as a new PDF."""
+    try:
+        from pypdf import PdfReader, PdfWriter
+    except ImportError:
+        raise ImportError("PDF manipulation requires pypdf. Run: pip install pypdf")
+    
+    reader = PdfReader(input_path)
+    writer = PdfWriter()
+    
+    total_pages = len(reader.pages)
+    start_idx = max(0, start_page - 1)
+    end_idx = min(total_pages, end_page)
+    
+    for i in range(start_idx, end_idx):
+        writer.add_page(reader.pages[i])
+        
+    with open(output_path, "wb") as f:
+        writer.write(f)

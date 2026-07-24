@@ -126,3 +126,15 @@ def images_to_pdf(image_paths: list[str], output_pdf_path: str) -> None:
         raise ValueError("At least one image path is required")
     first, rest = images[0], images[1:]
     first.save(output_pdf_path, save_all=True, append_images=rest)
+
+def remove_background(input_path: str, output_path: str) -> None:
+    """Removes the background from an image using AI (rembg)."""
+    try:
+        from rembg import remove
+        from PIL import Image
+    except ImportError:
+        raise ImportError("Background removal requires rembg and Pillow. Run: pip install rembg pillow")
+    
+    input_image = Image.open(input_path)
+    output_image = remove(input_image)
+    output_image.save(output_path, "PNG")

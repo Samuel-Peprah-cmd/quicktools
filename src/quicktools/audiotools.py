@@ -31,25 +31,32 @@ def _load_model(model_size: str = "base", device: str = "cpu"):
     return WhisperModel(model_size, device=device, compute_type=compute_type)
 
 
-def transcribe_audio(path_or_url: str, model_size: str = "base", language: str | None = None) -> str:
-    """Transcribe local audio/video or web URLs to plain text."""
+def transcribe_audio(path_or_url: str, model_size: str = "base", language: str | None = None, task: str = "transcribe") -> str:
+    """Transcribe local audio/video or web URLs to plain text. Supports task='translate' to convert to English."""
     temp_file = None
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
-        temp_file = download_url_audio(path_or_url)
-        audio_path = temp_file
+        from .videotools import download_video
+        import tempfile
+        import os
+        temp_dir = tempfile.mkdtemp()
+        audio_path = download_video(path_or_url, output_dir=temp_dir, resolution="audio")
+        temp_file = audio_path
     else:
         audio_path = path_or_url
 
     try:
-        model = _load_model(model_size)
-        segments, _ = model.transcribe(audio_path, language=language)
+        from faster_whisper import WhisperModel
+        import torch
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        compute_type = "float16" if device == "cuda" else "int8"
+        
+        model = WhisperModel(model_size, device=device, compute_type=compute_type)
+        segments, _ = model.transcribe(audio_path, language=language, task=task)
         return " ".join(segment.text.strip() for segment in segments)
     finally:
         if temp_file and os.path.exists(temp_file):
-            try:
-                os.remove(temp_file)
-            except Exception:
-                pass
+            import shutil
+            shutil.rmtree(os.path.dirname(temp_file), ignore_errors=True)
 
 
 def transcribe_audio_with_timestamps(path: str, model_size: str = "base") -> list[dict]:
