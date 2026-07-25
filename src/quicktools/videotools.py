@@ -142,6 +142,9 @@ def save_video_script_to_docx(transcript_data: list[dict], output_path: str, tit
     doc.save(output_path)
 
 
+import os
+import shutil
+
 def download_video(url: str, output_dir: str = ".", filename: str | None = None, resolution: str = "best", cookiefile: str | None = None) -> str:
     """
     Downloads a video file from supported web URLs (YouTube, TikTok, Instagram, X/Twitter, etc.).
@@ -194,6 +197,12 @@ def download_video(url: str, output_dir: str = ".", filename: str | None = None,
         # Tells YouTube the request is coming from a mobile app, bypassing web bot-checkers
         'extractor_args': {'youtube': ['player_client=android']}, 
     }
+
+    # --- CRITICAL APPLE iOS FIXES ---
+    if has_ffmpeg:
+        # Force FFmpeg to move the moov atom to the top of the file (Fast Start)
+        ydl_opts['postprocessor_args'] = ['-movflags', '+faststart']
+    # --------------------------------
 
     # --- ATTACH COOKIE IF AVAILABLE ---
     if cookiefile and os.path.exists(cookiefile):

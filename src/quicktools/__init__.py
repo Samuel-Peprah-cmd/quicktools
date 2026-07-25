@@ -92,4 +92,4 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 - `videotools` - web video downloader, audio extraction, video transcription, frame extraction
 """
 
-__version__ = "0.8.8"
+__version__ = "0.9.0"
