@@ -5,7 +5,7 @@
 
 # quicktools
 
-A math, text, media, and document automation toolkit— built by **Samuel Peprah**
+A math, text, media, and document automation toolkit — built by **Samuel Peprah**
 under **AtomDev Studios**.
 
 ---
@@ -72,8 +72,6 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 
 ---
 
-"""
-"""
 ### Modules:
 - `mathtools` - primes, GCD/LCM, mean, median, standard deviation
 - `strtools` - palindromes, slugify, edit distance, anagrams, ciphers
@@ -92,4 +90,4 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 - `videotools` - web video downloader, audio extraction, video transcription, frame extraction
 """
 
-__version__ = "0.9.0"
+__version__ = "0.9.1"
