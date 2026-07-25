@@ -9,7 +9,9 @@ No separate ffmpeg installation is required — audio decoding is bundled in.
 import os
 import tempfile
 import warnings
-import torch
+import os
+import tempfile
+import warnings
 warnings.filterwarnings("ignore", message=".*torchcodec.*")
 warnings.filterwarnings("ignore", category=UserWarning, module="pyannote.*")
 
@@ -35,15 +37,10 @@ def transcribe_audio(path_or_url: str, model_size: str = "base", language: str |
     """Transcribe local audio/video or web URLs to plain text. Supports task='translate' to convert to English."""
     temp_file = None
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
-        from .videotools import download_video
-        import tempfile
-        import os
-        temp_dir = tempfile.mkdtemp()
-        audio_path = download_video(path_or_url, output_dir=temp_dir, resolution="audio")
+        audio_path = download_url_audio(path_or_url)
         temp_file = audio_path
     else:
         audio_path = path_or_url
-
     try:
         from faster_whisper import WhisperModel
         import torch
@@ -238,6 +235,7 @@ def transcribe_with_speakers(path_or_url: str, hf_token: str, model_size: str = 
                 "Speaker diarization requires pyannote.audio. Install with: pip install pyannote.audio"
             )
 
+        import torch
         if device == "auto":
             device = "cuda" if torch.cuda.is_available() else "cpu"
 

@@ -127,17 +127,30 @@ def images_to_pdf(image_paths: list[str], output_pdf_path: str) -> None:
     first, rest = images[0], images[1:]
     first.save(output_pdf_path, save_all=True, append_images=rest)
 
-def remove_background(input_path: str, output_path: str) -> None:
-    """Removes the background from an image using AI (rembg)."""
+def remove_background(input_path: str, output_path: str, bg_color: str | None = None) -> None:
+    """Removes the background from an image using AI (rembg). Optionally adds a solid background color."""
     try:
         from rembg import remove
         from PIL import Image
     except ImportError:
         raise ImportError("Background removal requires rembg and Pillow. Run: pip install rembg pillow")
-    
+        
     input_image = Image.open(input_path)
     output_image = remove(input_image)
-    output_image.save(output_path, "PNG")
+    
+    # If the user selected a custom background color (e.g., '#FFFFFF')
+    if bg_color and bg_color.strip():
+        try:
+            # Create a solid color background image matching the cutout's size
+            bg_layer = Image.new("RGBA", output_image.size, bg_color)
+            # Composite the transparent AI cutout over the new background
+            output_image = Image.alpha_composite(bg_layer, output_image)
+            # Drop the alpha channel so it saves cleanly
+            output_image = output_image.convert("RGB")
+        except Exception as e:
+            print(f"Warning: Could not apply background color {bg_color}: {e}")
+            
+    output_image.save(output_path)
 
 def compress_image(input_path: str, output_path: str, quality: int = 65) -> None:
     """Compresses an image to drastically reduce file size while maintaining acceptable quality."""

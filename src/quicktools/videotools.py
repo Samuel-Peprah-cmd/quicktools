@@ -144,6 +144,7 @@ def save_video_script_to_docx(transcript_data: list[dict], output_path: str, tit
 
 import os
 import shutil
+import random
 
 def download_video(url: str, output_dir: str = ".", filename: str | None = None, resolution: str = "best", cookiefile: str | None = None) -> str:
     """
@@ -194,7 +195,6 @@ def download_video(url: str, output_dir: str = ".", filename: str | None = None,
         'quiet': False,
         'no_warnings': True,
         'merge_output_format': 'mp4' if has_ffmpeg else None,
-        # Tells YouTube the request is coming from a mobile app, bypassing web bot-checkers
         'extractor_args': {'youtube': ['player_client=android']}, 
     }
 
@@ -210,15 +210,94 @@ def download_video(url: str, output_dir: str = ".", filename: str | None = None,
         ydl_opts['cookiefile'] = cookiefile
     # ----------------------------------
 
-    print(f"📥 Downloading video from {url}...")
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=True)
-        filepath = ydl.prepare_filename(info)
+    # --- HELPER FUNCTION FOR EXECUTION AND VALIDATION ---
+    def attempt_download(opts: dict) -> str:
+        with yt_dlp.YoutubeDL(opts) as ydl:
+            info = ydl.extract_info(url, download=True)
+            filepath = ydl.prepare_filename(info)
 
-        # Check if output was merged into an mp4 container
-        base, _ = os.path.splitext(filepath)
-        if os.path.exists(f"{base}.mp4"):
-            filepath = f"{base}.mp4"
+            # Check if output was merged into an mp4 container
+            base, _ = os.path.splitext(filepath)
+            if os.path.exists(f"{base}.mp4"):
+                filepath = f"{base}.mp4"
 
-        print(f"✅ Video saved to: {filepath}")
-        return os.path.abspath(filepath)
+            # CRITICAL: verify the file actually exists AND has real content.
+            # A silent merge failure can leave a 0-byte or missing file that would
+            # otherwise look "successful" to the caller.
+            if not os.path.exists(filepath):
+                raise RuntimeError(f"Download appeared to succeed but no file was found at {filepath}")
+            file_size = os.path.getsize(filepath)
+            if file_size == 0:
+                raise RuntimeError(f"Downloaded file is empty (0 bytes): {filepath}")
+
+            print(f"✅ Video saved to: {filepath} ({file_size / 1024 / 1024:.1f} MB)")
+            return os.path.abspath(filepath)
+
+    # === ATTEMPT 1: IPv6 Workaround ===
+    print(f"📥 [Attempt 1] Downloading video from {url} via IPv6...")
+    ydl_opts_ipv6 = ydl_opts.copy()
+    ydl_opts_ipv6['source_address'] = '0::0'
+
+    try:
+        return attempt_download(ydl_opts_ipv6)
+    except Exception as e_ipv6:
+        print(f"⚠️ IPv6 Attempt Failed/Blocked: {str(e_ipv6)}")
+
+        # === ATTEMPT 2: Rotating Webshare Proxy Fallback ===
+        proxy_env = os.getenv("RESIDENTIAL_PROXY")
+        if proxy_env:
+            # Parse the comma-separated string of 10 proxies you added to .env
+            proxy_list = [p.strip() for p in proxy_env.split(",") if p.strip()]
+            chosen_proxy = random.choice(proxy_list)
+            
+            # Print masked proxy IP for terminal debugging (hides your username/password)
+            masked_ip = chosen_proxy.split('@')[-1] if '@' in chosen_proxy else chosen_proxy
+            print(f"🛡️ [Attempt 2] Routing download through random Webshare proxy ({masked_ip})...")
+            
+            ydl_opts_proxy = ydl_opts.copy()
+            ydl_opts_proxy['proxy'] = chosen_proxy
+
+            try:
+                return attempt_download(ydl_opts_proxy)
+            except Exception as e_proxy:
+                print(f"❌ Proxy Attempt Failed: {str(e_proxy)}")
+                raise RuntimeError(f"Both IPv6 and Proxy downloads failed. Last error: {str(e_proxy)}")
+        else:
+            print("❌ No RESIDENTIAL_PROXY found in environment variables.")
+            raise RuntimeError(f"IPv6 download failed ({str(e_ipv6)}), and no Webshare Proxy was configured.")
+
+
+import subprocess
+def convert_video_to_animated(input_path: str, output_path: str, target_format: str = "gif", fps: int = 15, width: int = 512) -> None:
+    """Converts a video to an animated GIF or WebP sticker using FFmpeg."""
+    if not shutil.which("ffmpeg"):
+        raise RuntimeError("FFmpeg is required for video-to-animation conversion. Please install it.")
+    
+    # WhatsApp/Telegram stickers prefer a 512px boundary. We scale proportionally.
+    scale_filter = f"fps={fps},scale={width}:-1:flags=lanczos"
+    
+    if target_format.lower() == "gif":
+        # High-quality GIF generation using a 2-pass color palette
+        vf_cmd = f"{scale_filter},split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"
+        cmd = ["ffmpeg", "-y", "-i", input_path, "-vf", vf_cmd, "-loop", "0", output_path]
+    elif target_format.lower() == "webp":
+        # Animated WebP optimized for social media stickers
+        cmd = [
+            "ffmpeg", "-y", "-i", input_path, 
+            "-vcodec", "libwebp", 
+            "-vf", scale_filter,
+            "-lossless", "0", 
+            "-compression_level", "4", 
+            "-q:v", "50", 
+            "-loop", "0", 
+            "-preset", "picture", 
+            "-an", "-vsync", "0", 
+            output_path
+        ]
+    else:
+        raise ValueError("Target format must be 'gif' or 'webp'")
+
+    # Execute FFmpeg silently
+    result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    if result.returncode != 0:
+        raise RuntimeError(f"FFmpeg conversion failed: {result.stderr}")
