@@ -9,9 +9,6 @@ No separate ffmpeg installation is required — audio decoding is bundled in.
 import os
 import tempfile
 import warnings
-import os
-import tempfile
-import warnings
 warnings.filterwarnings("ignore", message=".*torchcodec.*")
 warnings.filterwarnings("ignore", category=UserWarning, module="pyannote.*")
 
@@ -35,26 +32,128 @@ def _load_model(model_size: str = "base", device: str = "cpu"):
 
 def transcribe_audio(path_or_url: str, model_size: str = "base", language: str | None = None, task: str = "transcribe") -> str:
     """Transcribe local audio/video or web URLs to plain text. Supports task='translate' to convert to English."""
+    import os
+    import time
+    
     temp_file = None
     if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
         audio_path = download_url_audio(path_or_url)
         temp_file = audio_path
     else:
         audio_path = path_or_url
+
     try:
-        from faster_whisper import WhisperModel
+        # Prevent crash if frontend sends 'auto' string instead of None
+        if language == "auto" or language == "":
+            language = None
+
+        # Determine if we should route to Gemini
+        lang_lower = language.lower() if language else ""
+        use_gemini = lang_lower in ["twi", "akan", "en", "english"]
+
+        # === AI ENGINE (Powered by Gemini 3.6 Flash) ===
+        if use_gemini:
+            try:
+                from google import genai
+            except ImportError:
+                raise RuntimeError("The 'google-genai' package is missing. Please install it.")
+                
+            api_key = os.environ.get("GEMINI_API_KEY")
+            if not api_key:
+                raise RuntimeError("GEMINI_API_KEY is missing from your environment variables!")
+
+            print(f"  [AtomDev] Intercepted {lang_lower} request. Routing audio to Gemini 3.6 Engine...")
+            client = genai.Client(api_key=api_key)
+            
+            # Upload the audio file directly to Gemini's memory
+            print("  [AtomDev] Uploading media to Gemini...")
+            audio_file = client.files.upload(file=audio_path)
+            
+            # Dynamically set the prompt based on language and task
+            if lang_lower in ["twi", "akan"]:
+                if task == "translate":
+                    print("  [AtomDev] Translating mixed Twi/English directly to English...")
+                    prompt = (
+                        "Listen to this audio, which may contain a mix of Twi/Akan and English. "
+                        "Translate any Twi spoken into highly accurate, natural-sounding English, "
+                        "and accurately transcribe the English parts. Provide a clean, well-formatted, "
+                        "and punctuated transcript. Remove verbal stutters and false starts. "
+                        "Organize the dialogue clearly with plain-text speaker labels in ALL CAPS "
+                        "(e.g., INTERVIEWER:, RESPONDENT:). Strictly DO NOT use asterisks or any markdown formatting. "
+                        "Return ONLY the final unified English text."
+                    )
+                else:
+                    print("  [AtomDev] Transcribing Twi...")
+                    prompt = (
+                        "Listen to this Twi/Akan audio. Provide a highly accurate transcription in Twi. "
+                        "Provide a clean, well-formatted, and punctuated transcript. "
+                        "Organize the dialogue clearly with plain-text speaker labels in ALL CAPS "
+                        "(e.g., INTERVIEWER:, RESPONDENT:). Strictly DO NOT use asterisks or any markdown formatting. "
+                        "Return ONLY the finalized Twi text."
+                    )
+            else:
+                # English Cleanup Prompt
+                print("  [AtomDev] Transcribing and cleaning English audio...")
+                prompt = (
+                    "Listen to this English interview audio. Provide a clean, well-formatted, and punctuated transcript. "
+                    "Remove verbal stutters, false starts, filler words, and background chatter. "
+                    "Organize the dialogue clearly with plain-text speaker labels in ALL CAPS "
+                    "(e.g., INTERVIEWER:, RESPONDENT:). Strictly DO NOT use asterisks or any markdown formatting. "
+                    "Return ONLY the cleaned transcript text."
+                )
+                
+            try:
+                # Generate text with an automatic retry loop for 503 errors
+                max_retries = 3
+                final_text = ""
+                
+                for attempt in range(max_retries):
+                    try:
+                        response = client.models.generate_content(
+                            model='gemini-3.6-flash',
+                            contents=[prompt, audio_file]
+                        )
+                        final_text = response.text.strip()
+                        break  # Success! Break out of the retry loop.
+                        
+                    except Exception as e:
+                        error_msg = str(e)
+                        if "503" in error_msg or "UNAVAILABLE" in error_msg:
+                            if attempt < max_retries - 1:
+                                wait_time = 3 * (attempt + 1)
+                                print(f"  [AtomDev] Google servers busy (503). Retrying in {wait_time} seconds...")
+                                time.sleep(wait_time)
+                            else:
+                                raise RuntimeError("Google Gemini servers are currently overloaded. Please try again in a few minutes.")
+                        else:
+                            # If it's a different error (like 400 or 403), raise it immediately
+                            raise e
+            finally:
+                # Clean up the file from cloud memory
+                try:
+                    client.files.delete(name=audio_file.name)
+                except Exception:
+                    pass
+                
+            return final_text
+        # ======================================================
+
+        # === STANDARD ENGINE (For all other languages, e.g., French, Spanish) ===
         import torch
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        compute_type = "float16" if device == "cuda" else "int8"
+        from faster_whisper import WhisperModel
         
-        model = WhisperModel(model_size, device=device, compute_type=compute_type)
+        device_str = "cuda" if torch.cuda.is_available() else "cpu"
+        compute_type = "float16" if device_str == "cuda" else "int8"
+        
+        print(f"  [AtomDev] Processing with standard {model_size} engine...")
+        model = WhisperModel(model_size, device=device_str, compute_type=compute_type)
         segments, _ = model.transcribe(audio_path, language=language, task=task)
         return " ".join(segment.text.strip() for segment in segments)
+
     finally:
         if temp_file and os.path.exists(temp_file):
             import shutil
             shutil.rmtree(os.path.dirname(temp_file), ignore_errors=True)
-
 
 def transcribe_audio_with_timestamps(path: str, model_size: str = "base") -> list[dict]:
     """Transcribe audio into a list of segments, each with 'start', 'end' (seconds), and 'text'."""
@@ -212,7 +311,7 @@ def chunk_audio_file(input_path: str, chunk_duration_ms: int = 600000) -> list[s
 
 
 def transcribe_with_speakers(path_or_url: str, hf_token: str, model_size: str = "base",
-                             device: str = "auto") -> list[dict]:
+                             device: str = "auto", language: str | None = None) -> list[dict]:
     """Transcribe local audio/video or web URLs (YouTube, TikTok, IG, X) with word-level speaker diarization."""
     temp_file = None
     
@@ -263,8 +362,13 @@ def transcribe_with_speakers(path_or_url: str, hf_token: str, model_size: str = 
                 diarization = pipeline({"waveform": waveform, "sample_rate": sample_rate})
 
         print("[4/4] Transcribing speech with word-level timestamps...")
+        
+        # Prevent crash if frontend sends 'auto' string instead of None
+        if language == "auto" or language == "":
+            language = None
+            
         model = _load_model(model_size)
-        segments, _ = model.transcribe(audio_path, word_timestamps=True)
+        segments, _ = model.transcribe(audio_path, word_timestamps=True, language=language)
 
         # Extract individual words with exact timestamps
         all_words = []
@@ -329,7 +433,6 @@ def transcribe_with_speakers(path_or_url: str, hf_token: str, model_size: str = 
         return transcript_data
 
     finally:
-        # Clean up temporary downloaded file
         if temp_file and os.path.exists(temp_file):
             try:
                 os.remove(temp_file)

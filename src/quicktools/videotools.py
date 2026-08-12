@@ -10,6 +10,9 @@ uses FFmpeg's decoding engine internally, the same one that powers audiotools.
 import os
 import shutil
 import tempfile
+import random
+import subprocess
+import requests
 
 
 def get_video_info(path: str) -> dict:
@@ -142,129 +145,103 @@ def save_video_script_to_docx(transcript_data: list[dict], output_path: str, tit
     doc.save(output_path)
 
 
-import os
-import shutil
-import random
 
 def download_video(url: str, output_dir: str = ".", filename: str | None = None, resolution: str = "best", cookiefile: str | None = None) -> str:
-    """
-    Downloads a video file from supported web URLs (YouTube, TikTok, Instagram, X/Twitter, etc.).
-    
-    :param url: The web video URL to download.
-    :param output_dir: Destination folder (defaults to current directory).
-    :param filename: Optional custom filename (without extension). Defaults to video title.
-    :param resolution: Quality target ('best' or 'worst').
-    :param cookiefile: Path to a cookies.txt file to bypass login restrictions.
-    :return: Absolute file path of the downloaded video.
-    """
     try:
         import yt_dlp
     except ImportError:
-        raise ImportError(
-            "Downloading videos requires 'yt-dlp'. Install it with: pip install yt-dlp"
-        )
+        raise ImportError("Downloading videos requires 'yt-dlp'. Install it with: pip install yt-dlp")
 
     os.makedirs(output_dir, exist_ok=True)
     out_template = f"{filename}.%(ext)s" if filename else "%(title)s.%(ext)s"
     target_path = os.path.join(output_dir, out_template)
 
-    # --- AUTO-DETECT SERVER COOKIES ---
+    # 1. RESOLVE SHORTLINKS & NORMALIZE X.COM
+    if "x.com" in url:
+        url = url.replace("x.com", "twitter.com")
+
+    final_url = url
+    if "vt.tiktok.com" in url or "vm.tiktok.com" in url:
+        try:
+            resp = requests.head(url, allow_redirects=True, timeout=8, headers={'User-Agent': 'Mozilla/5.0'})
+            final_url = resp.url
+            print(f"  [quicktools] Resolved shortlink: {url} -> {final_url}")
+        except Exception as e_redirect:
+            print(f"  [quicktools] Shortlink resolution warning: {str(e_redirect)}")
+
     if not cookiefile and os.path.exists('/app/cookies.txt'):
         cookiefile = '/app/cookies.txt'
-    # ----------------------------------
 
-    # --- THE SMART FFMPEG FALLBACK ---
     has_ffmpeg = shutil.which("ffmpeg") is not None
-    
     if resolution == "best":
-        if has_ffmpeg:
-            # Grab max quality separate streams and merge them
-            fmt = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
-        else:
-            # Fall back to the best PRE-MERGED format (usually 720p max) to prevent a crash
-            print("⚠️ [quicktools] FFmpeg not found. Falling back to pre-merged 720p format.")
-            print("💡 Tip: Install FFmpeg ('winget install ffmpeg') to enable 1080p+ downloads.")
-            fmt = 'best[ext=mp4]/best'
+        fmt = 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' if has_ffmpeg else 'best[ext=mp4]/best'
     else:
         fmt = 'worst'
-    # ---------------------------------
 
     ydl_opts = {
         'format': fmt,
         'outtmpl': target_path,
         'quiet': False,
         'no_warnings': True,
+        'socket_timeout': 15,
         'merge_output_format': 'mp4' if has_ffmpeg else None,
-        'extractor_args': {'youtube': ['player_client=android']}, 
+        'http_headers': {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        },
+        # === THE CORRECTED API BACKDOORS (Wrapped in Lists!) ===
+        'extractor_args': {
+            'youtube': {'player_client': ['android']},
+            'twitter': {'api': ['syndication']},   
+            'tiktok': {'app_version': ['123456']}  
+        }
     }
 
-    # --- CRITICAL APPLE iOS FIXES ---
     if has_ffmpeg:
-        # Force FFmpeg to move the moov atom to the top of the file (Fast Start)
         ydl_opts['postprocessor_args'] = ['-movflags', '+faststart']
-    # --------------------------------
 
-    # --- ATTACH COOKIE IF AVAILABLE ---
     if cookiefile and os.path.exists(cookiefile):
-        print(f"🔑 Using cookie authentication file: {cookiefile}")
         ydl_opts['cookiefile'] = cookiefile
-    # ----------------------------------
 
-    # --- HELPER FUNCTION FOR EXECUTION AND VALIDATION ---
-    def attempt_download(opts: dict) -> str:
+    def attempt_download(opts: dict, target_url: str) -> str:
         with yt_dlp.YoutubeDL(opts) as ydl:
-            info = ydl.extract_info(url, download=True)
+            info = ydl.extract_info(target_url, download=True)
             filepath = ydl.prepare_filename(info)
-
-            # Check if output was merged into an mp4 container
             base, _ = os.path.splitext(filepath)
             if os.path.exists(f"{base}.mp4"):
                 filepath = f"{base}.mp4"
-
-            # CRITICAL: verify the file actually exists AND has real content.
-            # A silent merge failure can leave a 0-byte or missing file that would
-            # otherwise look "successful" to the caller.
-            if not os.path.exists(filepath):
-                raise RuntimeError(f"Download appeared to succeed but no file was found at {filepath}")
-            file_size = os.path.getsize(filepath)
-            if file_size == 0:
-                raise RuntimeError(f"Downloaded file is empty (0 bytes): {filepath}")
-
-            print(f"✅ Video saved to: {filepath} ({file_size / 1024 / 1024:.1f} MB)")
+            if not os.path.exists(filepath) or os.path.getsize(filepath) == 0:
+                raise RuntimeError("Download succeeded but file is missing or empty.")
             return os.path.abspath(filepath)
 
-    # === ATTEMPT 1: IPv6 Workaround ===
-    print(f"📥 [Attempt 1] Downloading video from {url} via IPv6...")
+    # === ATTEMPT 1: Direct IPv6 ===
+    print(f"  [Attempt 1] Direct IPv6 download from {final_url}...")
     ydl_opts_ipv6 = ydl_opts.copy()
     ydl_opts_ipv6['source_address'] = '0::0'
-
     try:
-        return attempt_download(ydl_opts_ipv6)
+        return attempt_download(ydl_opts_ipv6, final_url)
     except Exception as e_ipv6:
-        print(f"⚠️ IPv6 Attempt Failed/Blocked: {str(e_ipv6)}")
+        print(f"  IPv6 Attempt Failed: {str(e_ipv6)}")
 
-        # === ATTEMPT 2: Rotating Webshare Proxy Fallback ===
-        proxy_env = os.getenv("RESIDENTIAL_PROXY")
-        if proxy_env:
-            # Parse the comma-separated string of 10 proxies you added to .env
-            proxy_list = [p.strip() for p in proxy_env.split(",") if p.strip()]
-            chosen_proxy = random.choice(proxy_list)
-            
-            # Print masked proxy IP for terminal debugging (hides your username/password)
-            masked_ip = chosen_proxy.split('@')[-1] if '@' in chosen_proxy else chosen_proxy
-            print(f"🛡️ [Attempt 2] Routing download through random Webshare proxy ({masked_ip})...")
-            
-            ydl_opts_proxy = ydl_opts.copy()
-            ydl_opts_proxy['proxy'] = chosen_proxy
+    # === ATTEMPT 2: Direct IPv4 ===
+    print(f"  [Attempt 2] Direct IPv4 download...")
+    ydl_opts_ipv4 = ydl_opts.copy()
+    try:
+        return attempt_download(ydl_opts_ipv4, final_url)
+    except Exception as e_ipv4:
+        print(f"  IPv4 Attempt Failed: {str(e_ipv4)}")
 
-            try:
-                return attempt_download(ydl_opts_proxy)
-            except Exception as e_proxy:
-                print(f"❌ Proxy Attempt Failed: {str(e_proxy)}")
-                raise RuntimeError(f"Both IPv6 and Proxy downloads failed. Last error: {str(e_proxy)}")
-        else:
-            print("❌ No RESIDENTIAL_PROXY found in environment variables.")
-            raise RuntimeError(f"IPv6 download failed ({str(e_ipv6)}), and no Webshare Proxy was configured.")
+    # === ATTEMPT 3: Rotating Proxy Endpoint ===
+    proxy_url = os.getenv("RESIDENTIAL_PROXY")
+    if proxy_url:
+        print("  [Attempt 3] Routing through Rotating Proxy Endpoint...")
+        ydl_opts_proxy = ydl_opts.copy()
+        ydl_opts_proxy['proxy'] = proxy_url.strip()
+        try:
+            return attempt_download(ydl_opts_proxy, final_url)
+        except Exception as e_proxy:
+            raise RuntimeError(f"Rotating Proxy failed: {str(e_proxy)}")
+    else:
+        raise RuntimeError(f"Direct downloads failed (IPv6/IPv4), and no rotating proxy configured. Last error: {str(e_ipv4)}")
 
 
 import subprocess
@@ -281,14 +258,15 @@ def convert_video_to_animated(input_path: str, output_path: str, target_format: 
         vf_cmd = f"{scale_filter},split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"
         cmd = ["ffmpeg", "-y", "-i", input_path, "-vf", vf_cmd, "-loop", "0", output_path]
     elif target_format.lower() == "webp":
-        # Animated WebP optimized for social media stickers
+        # Force exact 512x512 transparent canvas, 15fps, and loop infinitely for WhatsApp
+        wa_filter = "fps=15,scale=512:512:force_original_aspect_ratio=decrease,format=rgba,pad=512:512:(ow-iw)/2:(oh-ih)/2:color=#00000000"
         cmd = [
             "ffmpeg", "-y", "-i", input_path, 
             "-vcodec", "libwebp", 
-            "-vf", scale_filter,
+            "-vf", wa_filter,
             "-lossless", "0", 
-            "-compression_level", "4", 
-            "-q:v", "50", 
+            "-compression_level", "6", 
+            "-q:v", "40", 
             "-loop", "0", 
             "-preset", "picture", 
             "-an", "-vsync", "0", 
