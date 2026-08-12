@@ -88,6 +88,8 @@ PostgreSQL • SQLite • Git • GitHub • Cloudflare • Docker
 - `presentationtools` - read/create PowerPoint decks, cloud themes, docx/pdf-to-pptx, pptx-to-docx
 - `audiotools` - AI transcription, AI translation to English, word timestamps, speaker diarization, SRT export
 - `videotools` - web video downloader, audio extraction, video transcription, frame extraction
+- `readertools` - paginated text extraction from PDF, DOCX, and PPTX for smart readers
+- `signaturetools` - visual signature stamping (PDF/Word), true cryptographic digital signing
 """
 
-__version__ = "0.9.4"
+__version__ = "0.10.24"
